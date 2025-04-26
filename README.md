@@ -1,4 +1,4 @@
-# Project 5: Tuinue Wasichana
+# Tuinue Wasichana
 
 ## Overview
 Tuinue Wasichana is a platform dedicated to supporting school-going girls in Sub-Saharan Africa who lack access to sanitary products and proper menstrual hygiene facilities. The platform enables donors to contribute regularly to charities focused on providing sanitary towels, clean water, and sanitation facilities to improve menstrual hygiene and reduce school absenteeism among girls.
