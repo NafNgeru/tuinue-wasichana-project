@@ -14,12 +14,12 @@ class Charity(db.Model):
     image = db.Column(db.String)
     approved = db.Column(db.Boolean, default=False)
 
-    donations = db.relationship('Donation', back_populates='charity')
-    stories = db.relationship('Story', back_populates = 'charity')
-    inventory = db.relationship('Inventory', back_populates = 'charity')
+    donations = db.relationship('Donation', back_populates='charity', cascade="all, delete-orphan")
+    stories = db.relationship('Story', back_populates = 'charity', cascade="all, delete-orphan")
+    inventory = db.relationship('Inventory', back_populates = 'charity', cascade="all, delete-orphan")
 
 
     def __repr__(self):
-        return f'<Charity {self.name}>'
+        return f'<Charity {self.full_name}>'
 
 

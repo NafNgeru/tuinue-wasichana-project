@@ -26,14 +26,13 @@ def add_inventory_item(charity_id):
     db.session.commit()
     return jsonify({'message': 'Inventory item added'}), 201
 
-@inventory_bp.route('/charities/<int:charity_id>/inventory', methods=['DELETE'])
-def delete_inventory_item(charity_id):
-    data = request.get_json()
-    inventory = Inventory(
-        item_name=data['item_name'],
-        quantity=data['quantity'],
-        beneficiary_name=data.get('beneficiary_name')
-    )
-    db.session.delete(inventory)
+@inventory_bp.route('/charities/<int:charity_id>/inventory/<int:inventory_id>', methods=['DELETE'])
+def delete_inventory_item(charity_id, inventory_id):
+    inventory_item = Inventory.query.filter_by(id=inventory_id, charity_id=charity_id).first()
+    
+    if inventory_item is None:
+        return jsonify({'error': 'Inventory item not found'}), 404
+
+    db.session.delete(inventory_item)
     db.session.commit()
-    return jsonify({'message': 'Inventory item deleted'}), 201
+    return jsonify({'message': 'Inventory item deleted'}), 200
