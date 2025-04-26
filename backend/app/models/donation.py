@@ -1,6 +1,7 @@
 from datetime import datetime
 from ..db import db
 
+# Define the Donation table
 class Donation(db.Model):
     __tablename__ = 'donations'
 
