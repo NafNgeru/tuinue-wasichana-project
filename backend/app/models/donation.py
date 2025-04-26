@@ -14,7 +14,7 @@ class Donation(db.Model):
     reminder_set = db.Column(db.Boolean, default=False)
 
     donor = db.relationship('Donor', backref='donations')
-    charity = db.relationship('Charity', backref='donations')
+    charity = db.relationship('Charity', back_populates='donations')
 
     def __repr__(self):
         return f'<Donation {self.amount} to {self.charity.name}>'

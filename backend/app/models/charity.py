@@ -13,6 +13,7 @@ class Charity(db.Model):
     website_url = db.Column(db.String, nullable = True)
     image = db.Column(db.String)
     approved = db.Column(db.Boolean, default=False)
+    beneficiary_story = db.Column(db.String(500), nullable = True)
 
     donations = db.relationship('Donation', back_populates='charity', cascade="all, delete-orphan")
     stories = db.relationship('Story', back_populates = 'charity', cascade="all, delete-orphan")
