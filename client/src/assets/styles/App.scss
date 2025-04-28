@@ -1,0 +1,27 @@
+@import './base/_variables.scss';
+@import './base/_reset.scss';
+@import './base/_typography.scss';
+
+/* Global styles */
+a {
+  color: $color-primary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  background-color: $color-primary;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover {
+    background-color: $color-secondary;
+  }
+}

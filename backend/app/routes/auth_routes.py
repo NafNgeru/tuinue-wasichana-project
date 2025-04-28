@@ -54,6 +54,31 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
+        # Direct admin login bypassing registration
+        if form.email.data.lower() == 'admin@example.com':
+            admin_password = 'adminpassword'  # Set your admin password here
+            if form.password.data == admin_password:
+                user = User.query.filter_by(email=form.email.data).first()
+                if not user:
+                    # Create admin user if not exists
+                    user = User(
+                        username='admin',
+                        email='admin@example.com',
+                        password=bcrypt.generate_password_hash(admin_password).decode('utf-8'),
+                        is_admin=True,
+                    )
+                    db.session.add(user)
+                    db.session.commit()
+                login_user(user, remember=form.remember.data)
+                logger.info(f"Admin user logged in: {user.email}")
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('main.home'))
+            else:
+                flash('Invalid admin password.', 'danger')
+                logger.warning(f"Failed admin login attempt for email: {form.email.data}")
+                return render_template('login.html', title='Login', form=form)
+
+        # Charity and donor login
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
