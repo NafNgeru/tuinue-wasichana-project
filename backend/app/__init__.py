@@ -1,31 +1,38 @@
 from flask import Flask
-from .db import db
-from .routes.donor_routes import donor_bp
-from .routes.story_routes import story_bp
-from .routes.charity_routes import charity_bp
-from flask_cors import CORS
-from .routes.inventory_routes import inventory_bp
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
+from flask_jwt_extended import JWTManager
+from config import Config
 
-def create_app():
+# Create extensions
+db = SQLAlchemy()
+migrate = Migrate()
+login_manager = LoginManager()
+jwt = JWTManager()
+
+def create_app(config_class=Config):
     app = Flask(__name__)
-
-    # Database configuration
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/your_db_name'  # <-- Replace 'your_db_name' with your real database name
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    # Security key for session management
-    app.secret_key = 'your_secret_key'  # <-- Replace 'your_secret_key' with a strong secret key in production
+    app.config.from_object(config_class)
 
     # Initialize extensions
     db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    jwt.init_app(app)
 
+    # Import models here so Alembic sees them during migrations
+    from app.models import Donor, Charity, Donation, Inventory, Story, User
 
-    with app.app_context():
-        db.create_all()
-    # Register blueprints (routes)
-    app.register_blueprint(inventory_bp)
-    app.register_blueprint(charity_bp)
-    app.register_blueprint(story_bp)
-    app.register_blueprint(donor_bp)
+    # Register blueprints
+    from app.routes.auth_routes import auth_bp
+    from app.routes.charity_routes import charity_bp
+    from app.routes.donation_routes import donation_bp
+    from app.routes.admin_routes import admin_bp
+
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(charity_bp, url_prefix='/api/charities')
+    app.register_blueprint(donation_bp, url_prefix='/api/donations')
+    app.register_blueprint(admin_bp, url_prefix='/api/admin')
 
     return app
