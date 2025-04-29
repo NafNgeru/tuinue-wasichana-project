@@ -59,7 +59,7 @@ const DonorDashboard = () => {
 };
      
 
-//export default DonorDashboard;
+export default DonorDashboard;
 
 
 
@@ -77,5 +77,4 @@ const DonorDashboard = () => {
 
 
 
-export default DashboardPage;
 
