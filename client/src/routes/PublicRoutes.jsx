@@ -7,6 +7,7 @@ import CharityRegistration from '../components/auth/CharityRegistration';
 import DonorRegistration from '../components/auth/DonorRegistration';
 import LoginForm from '../components/auth/LoginForm';
 import ResetPassword from '../components/auth/ResetPassword';
+import RegistrationChoice from '../components/auth/RegistrationChoice';
 
 const PublicRoutes = () => {
   return (
@@ -15,8 +16,9 @@ const PublicRoutes = () => {
       <Route path="about" element={<AboutPage />} />
       <Route path="charities" element={<CharityListingPage />} />
       <Route path="login" element={<LoginForm />} />
-      <Route path="register/charity" element={<CharityRegistration />} />
-      <Route path="register/donor" element={<DonorRegistration />} />
+      <Route path="register" element={<RegistrationChoice />} />
+      <Route path="register/charity/:userType" element={<CharityRegistration />} />
+      <Route path="register/donor/:userType" element={<DonorRegistration />} />
       <Route path="reset-password" element={<ResetPassword />} />
     </Routes>
   );

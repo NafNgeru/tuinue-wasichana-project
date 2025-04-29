@@ -1,33 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import api from '../../services/api';
 
 const DonorRegistration = () => {
+  const { userType } = useParams();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    username: '',
     password: '',
-    userType: 'individual', // default to individual
+    phone: '',
+    userType: userType || 'individual',
   });
   const [message, setMessage] = useState('');
+  const [usernameAvailable, setUsernameAvailable] = useState(true);
+
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, userType: userType || 'individual' }));
+  }, [userType]);
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value});
+    if (e.target.name === 'username') {
+      setUsernameAvailable(true);
+    }
+  };
+
+  const checkUsername = async (username) => {
+    try {
+      const response = await api.get(`/auth/check-username/${username}`);
+      setUsernameAvailable(response.data.available);
+      return response.data.available;
+    } catch {
+      setUsernameAvailable(false);
+      return false;
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!usernameAvailable) {
+      setMessage('Username already taken. Please try another.');
+      return;
+    }
+    const isAvailable = await checkUsername(formData.username);
+    if (!isAvailable) {
+      setMessage('Username already taken. Please try another.');
+      return;
+    }
     try {
       await api.post('/donors/register', formData);
       setMessage('Registration successful!');
-      setFormData({name: '', email: '', password: '', userType: 'individual'});
+      setFormData({name: '', email: '', username: '', password: '', phone: '', userType: userType || 'individual'});
     } catch {
       setMessage('Registration failed. Please try again.');
     }
   };
 
   return (
-    <section className="registration-page max-w-md mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Donor Registration</h2>
+    <section className="max-w-md mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-4">Donor Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <label className="flex flex-col">
           Donor Name:
@@ -52,6 +84,17 @@ const DonorRegistration = () => {
           />
         </label>
         <label className="flex flex-col">
+          Username:
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+            className={`border rounded px-3 py-2 mt-1 ${usernameAvailable ? 'border-gray-300' : 'border-red-600'}`}
+          />
+        </label>
+        <label className="flex flex-col">
           Password:
           <input
             type="password"
@@ -62,29 +105,17 @@ const DonorRegistration = () => {
             className="border border-gray-300 rounded px-3 py-2 mt-1"
           />
         </label>
-        <fieldset className="flex flex-col gap-2">
-          <legend>User Type:</legend>
-          <label>
-            <input
-              type="radio"
-              name="userType"
-              value="individual"
-              checked={formData.userType === 'individual'}
-              onChange={handleChange}
-            />
-            Individual
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="userType"
-              value="organization"
-              checked={formData.userType === 'organization'}
-              onChange={handleChange}
-            />
-            Organization
-          </label>
-        </fieldset>
+        <label className="flex flex-col">
+          Phone Number:
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded px-3 py-2 mt-1"
+          />
+        </label>
         <button
           type="submit"
           className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
@@ -92,7 +123,7 @@ const DonorRegistration = () => {
           Register
         </button>
       </form>
-      {message && <p className="mt-4 text-green-600">{message}</p>}
+      {message && <p className={`mt-4 ${usernameAvailable ? 'text-green-600' : 'text-red-600'}`}>{message}</p>}
     </section>
   );
 };
