@@ -1,0 +1,53 @@
+.charity-details-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+  }
+  
+  .charity-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .charity-name {
+    margin-top: 1rem;
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  .charity-description {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  .charity-contact {
+    text-align: left;
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  .view-stories-button {
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    background-color: #65558F;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .view-stories-button:hover {
+    background-color: #9e01f8;
+  }
+  

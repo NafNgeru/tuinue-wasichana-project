@@ -3,10 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/public/HomePage';
 import AboutPage from '../pages/public/AboutPage';
 import CharityListingPage from '../pages/public/CharityListingPage';
-import CharityRegistration from '../components/auth/CharityRegistration';
-import DonorRegistration from '../components/auth/DonorRegistration';
-import LoginForm from '../components/auth/LoginForm';
-import ResetPassword from '../components/auth/ResetPassword';
+// import CharityRegistration from '../components/auth/CharityRegistration';
+// import DonorRegistration from '../components/auth/DonorRegistration';
+// import LoginForm from '../components/auth/LoginForm';
+// import ResetPassword from '../components/auth/ResetPassword';
 
 const PublicRoutes = () => {
   return (

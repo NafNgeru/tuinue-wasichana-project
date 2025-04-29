@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/ui/Navbar/Navbar';
-import Footer from './components/ui/Footer';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import PublicRoutes from './routes/PublicRoutes';
 import DonorRoutes from './routes/DonorRoutes';
 import CharityRoutes from './routes/CharityRoutes';
@@ -13,7 +13,7 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar />
+      <Header />
       <main style={{ minHeight: '80vh', padding: '1rem' }}>
         <Routes>
           <Route path="/*" element={<PublicRoutes />} />
