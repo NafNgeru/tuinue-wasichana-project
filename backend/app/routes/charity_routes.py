@@ -26,6 +26,36 @@ def apply_charity():
     db.session.commit()
     return jsonify({'message': 'Application submitted successfully'}), 200
 
+@charity_bp.route('/', methods=['GET'])
+def get_all_charities():
+    charities = charity.query.all()
+    result = [
+        {
+            "id": charity.id,
+            "full_name": charity.full_name,
+            "email": charity.email,
+            "website_url": charity.website_url,
+            "description": charity.description
+        }
+        for charity in charities
+    ]
+    return jsonify(result), 200
+
+@charity_bp.route('/<int:id>', methods=['GET'])
+def get_charity_by_id(id):
+    charity = charity.query.get(id)
+    if not charity:
+        return jsonify({"error": "Charity not found"}), 404
+
+    result = {
+        "id": charity.id,
+        "full_name": charity.full_name,
+        "email": charity.email,
+        "website_url": charity.website_url,
+        "description": charity.description
+    }
+    return jsonify(result), 200
+
 @charity_bp.route('/donors', methods=['GET'])
 @jwt_required()
 def get_donors():
