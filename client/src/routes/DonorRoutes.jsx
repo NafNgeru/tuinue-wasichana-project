@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import DashboardPage from '../pages/donor/DashboardPage';
+import DashboardPage from '../pages/donor/donorDashboard.';
 import DonationPage from '../pages/donor/DonationPage';
 import SettingsPage from '../pages/donor/SettingsPage';
 
