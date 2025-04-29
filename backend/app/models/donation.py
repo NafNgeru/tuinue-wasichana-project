@@ -7,7 +7,7 @@ class Donation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     donor_id = db.Column(db.Integer, db.ForeignKey('donors.id'),nullable=False)
-    charity_id = db.column(db.integer, db.foreignKey('charities.id'), nullable=False)
+    charity_id = db.Column(db.Integer, db.ForeignKey('charities.id'), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     anonymous = db.Column(db.Boolean, default=False)
@@ -16,6 +16,16 @@ class Donation(db.Model):
 
     donor = db.relationship('Donor', backref='donations')
     charity = db.relationship('Charity', back_populates='donations')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'donor_id': self.donor_id,
+            'charity_id': self.charity_id,
+            'amount': self.amount,
+            'date': self.date.isoformat() if self.date else None,
+            'donor_name': self.donor.name if self.donor and not self.anonymous else 'Anonymous'
+    }
 
     def __repr__(self):
         return f'<Donation {self.amount} to {self.charity.name}>'

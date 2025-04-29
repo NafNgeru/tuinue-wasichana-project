@@ -1,38 +1,26 @@
+# __init__.py
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from .db import db
+from .routes.story_routes import story_bp
+from .routes.charity_routes import charity_bp
+from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_login import LoginManager
-from flask_jwt_extended import JWTManager
-from config import Config
 
-# Create extensions
-db = SQLAlchemy()
 migrate = Migrate()
-login_manager = LoginManager()
-jwt = JWTManager()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(config_class)
 
-    # Initialize extensions
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
+
     db.init_app(app)
     migrate.init_app(app, db)
-    login_manager.init_app(app)
-    jwt.init_app(app)
+    CORS(app)
 
-    # Import models here so Alembic sees them during migrations
-    from app.models import Donor, Charity, Donation, Inventory, Story, User
-
-    # Register blueprints
-    from app.routes.auth_routes import auth_bp
-    from app.routes.charity_routes import charity_bp
-    from app.routes.donation_routes import donation_bp
-    from app.routes.admin_routes import admin_bp
-
-    app.register_blueprint(auth_bp, url_prefix='/api/auth')
-    app.register_blueprint(charity_bp, url_prefix='/api/charities')
-    app.register_blueprint(donation_bp, url_prefix='/api/donations')
-    app.register_blueprint(admin_bp, url_prefix='/api/admin')
+    blueprints = [charity_bp, story_bp]
+    for bp in blueprints:
+        app.register_blueprint(bp)
 
     return app

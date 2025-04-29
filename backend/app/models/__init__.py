@@ -1,7 +1,9 @@
-from app.db import db
 from .donor import Donor
-from .charity import Charity
 from .donation import Donation
-from .inventory import Inventory
-from .story import Story
 from .auth_user import User
+from .charity import Charity
+from .story import Story
+from .inventory import Inventory
+
+
+__all__ = ['Donor', 'Donation', 'User', 'Charity', 'Story', 'Inventory']

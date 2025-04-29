@@ -9,5 +9,5 @@ class Story(db.Model):
     content = db.Column(db.Text, nullable=False)
     image = db.Column(db.String, nullable=True)
 
-    charity_id = db.Column(db.Integer, db.ForeignKey('charities.id'), nullable=False)
+    charity_id = db.Column(db.Integer, db.ForeignKey('charities.id'))
     charity = db.relationship('Charity', back_populates='stories')
