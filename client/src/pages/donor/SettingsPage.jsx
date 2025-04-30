@@ -1,50 +1,35 @@
-import React from 'react';
-import React, { useState } from 'react';
-import './Settings.css';
-
-const SettingsPage = () => {
-  return (
-    <section>
-      <h1>Donor Settings</h1>
-      <p>Manage your account settings here.</p>
-    </section>
-  );
-};
-
-
-function Settings({ donor}) {
-  const [darkmode, setDarkMode] = useState(false);
-  const [formData, setformData] = useState({
+function Settings({ donor }) {
+  const [darkMode, setDarkMode] = useState(false);
+  const [formData, setFormData] = useState({
     name: donor.name,
     email: donor.email,
-    password:''
+    password: ''
   });
 
   const [profilePic, setProfilePic] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   const toggleTheme = () => {
-    setDarkMode(! darkMode);
-    document.body.className = !darkMode ? 'darkMode':'';
+    setDarkMode(!darkMode);
   };
 
-  const handleInputChange = (e) =>{
-    setFoarmData({...formData,  [e.target.name]: e.target.value });
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setProfilePic(e.target.files[0]);
+  };
 
-const handleFInputChange = (e) =>{
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage(null);
+    setError(null);
 
-const handleFileChange = (e) => {
-  setProfilePic(e.target.files[0]);
-};
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-};
-
-const data = new FormData();
+    const data = new FormData();
     data.append('name', formData.name);
     data.append('email', formData.email);
     data.append('password', formData.password);
@@ -56,17 +41,31 @@ const data = new FormData();
       method: 'PUT',
       body: data
     })
-      .then(res => res.json())
-      .then(data => alert('Profile updated successfully!'))
-      .catch(err => console.error('Update failed:', err));
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to update profile');
+        }
+        return res.json();
+      })
+      .then(data => {
+        setMessage('Profile updated successfully!');
+      })
+      .catch(err => {
+        setError('Update failed. Please try again.');
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
-    <div className="settings-container">
+    <div className={`settings-container ${darkMode ? 'dark' : ''}`}>
       <h2>Account Settings</h2>
       <button className="toggle-btn" onClick={toggleTheme}>
         Switch to {darkMode ? 'Light' : 'Dark'} Mode
       </button>
+
+      {message && <p className="success-msg">{message}</p>}
+      {error && <p className="error-msg">{error}</p>}
 
       <form onSubmit={handleSubmit}>
         <label>
@@ -104,12 +103,12 @@ const data = new FormData();
           />
         </label>
 
-        <button type="submit" className="save-btn">Save Changes</button>
+        <button type="submit" className="save-btn" disabled={loading}>
+          {loading ? 'Saving...' : 'Save Changes'}
+        </button>
       </form>
     </div>
   );
-
+}
 
 export default Settings;
-
-
