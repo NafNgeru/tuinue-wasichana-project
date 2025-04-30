@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../services/api';
+import '../../styles/auth.css';
 
 const DonorRegistration = () => {
   const { userType } = useParams();
@@ -58,10 +59,10 @@ const DonorRegistration = () => {
   };
 
   return (
-    <section className="max-w-md mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Donor Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <label className="flex flex-col">
+    <section className="auth-section max-w-md mx-auto p-4">
+      <h2 className="auth-title">Donor Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
+      <form onSubmit={handleSubmit} className="auth-form">
+        <label className="auth-label">
           Donor Name:
           <input
             type="text"
@@ -69,10 +70,10 @@ const DonorRegistration = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="auth-input"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="auth-label">
           Email:
           <input
             type="email"
@@ -80,10 +81,10 @@ const DonorRegistration = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="auth-input"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="auth-label">
           Username:
           <input
             type="text"
@@ -91,10 +92,10 @@ const DonorRegistration = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            className={`border rounded px-3 py-2 mt-1 ${usernameAvailable ? 'border-gray-300' : 'border-red-600'}`}
+            className={`auth-input ${usernameAvailable ? '' : 'auth-input-error'}`}
           />
         </label>
-        <label className="flex flex-col">
+        <label className="auth-label">
           Password:
           <input
             type="password"
@@ -102,10 +103,10 @@ const DonorRegistration = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="auth-input"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="auth-label">
           Phone Number:
           <input
             type="tel"
@@ -113,17 +114,17 @@ const DonorRegistration = () => {
             value={formData.phone}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="auth-input"
           />
         </label>
         <button
           type="submit"
-          className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
+          className="auth-button"
         >
           Register
         </button>
       </form>
-      {message && <p className={`mt-4 ${usernameAvailable ? 'text-green-600' : 'text-red-600'}`}>{message}</p>}
+      {message && <p className={`auth-message ${usernameAvailable ? 'auth-message-success' : 'auth-message-error'}`}>{message}</p>}
     </section>
   );
 };

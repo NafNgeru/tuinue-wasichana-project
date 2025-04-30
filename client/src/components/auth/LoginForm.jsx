@@ -52,11 +52,19 @@ const LoginForm = () => {
     }
   };
 
+  const handleRegisterClick = () => {
+    navigate('/register');
+  };
+
+  const handleResetPasswordClick = () => {
+    navigate('/reset-password');
+  };
+
   return (
-    <section className="max-w-md mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <label className="flex flex-col">
+    <section className="section max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">Login</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <label className="flex flex-col text-gray-700 font-semibold">
           Username:
           <input
             type="text"
@@ -65,10 +73,10 @@ const LoginForm = () => {
             onChange={handleChange}
             required
             minLength={6}
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="border border-gray-300 rounded px-4 py-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-700 font-semibold">
           Password:
           <input
             type="password"
@@ -76,17 +84,33 @@ const LoginForm = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="border border-gray-300 rounded px-4 py-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </label>
         <button
           type="submit"
-          className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
+          className="button"
         >
           Login
         </button>
       </form>
       {message && <p className="mt-4 text-red-600">{message}</p>}
+      <div className="mt-6 flex justify-between">
+        <button
+          onClick={handleRegisterClick}
+          className="button"
+          type="button"
+        >
+          Register
+        </button>
+        <button
+          onClick={handleResetPasswordClick}
+          className="link-button"
+          type="button"
+        >
+          Forgot Password?
+        </button>
+      </div>
     </section>
   );
 };
