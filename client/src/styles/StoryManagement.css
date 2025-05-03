@@ -1,50 +1,91 @@
 .create-story-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    background-color: #2bd4eb;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 700px;
+  margin: 3rem auto;
+  background-color: #22d3ee;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.create-story-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.create-story-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-story-container input,
+.create-story-container textarea {
+  padding: 16px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.create-story-container textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.create-story-container button {
+  padding: 16px;
+  background-color: #7e22ce;
+  color: white;
+  font-size: 1.125rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+}
+
+.create-story-container button:hover {
+  background-color: #a78bfa;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .create-story-container {
+    padding: 20px; /* Reduced padding for smaller screens */
+    max-width: 90%; /* Allow container to fill most of the screen */
   }
-  
+
   .create-story-container h2 {
-    text-align: center;
+    font-size: 1.75rem; /* Adjust font size for heading */
     margin-bottom: 1.5rem;
-    color: #333;
   }
-  
-  .create-story-container form {
-    display: flex;
-    flex-direction: column;
-  }
-  
+
   .create-story-container input,
   .create-story-container textarea {
-    padding: 12px;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
+    font-size: 1rem; /* Smaller font size for inputs and textarea */
   }
-  
-  .create-story-container textarea {
-    min-height: 120px;
-    resize: vertical;
-  }
-  
+
   .create-story-container button {
-    padding: 12px;
-    background-color: #7428a7;
-    color: white;
-    font-size: 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    font-size: 1rem; /* Adjust button font size */
+    padding: 14px; /* Reduced padding for the button */
   }
-  
-  .create-story-container button:hover {
-    background-color: #78ffff;
-  }
-  
+}
+
+.create-story-container .error-message {
+  color: #dc2626;
+  font-size: 1rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.create-story-container .success-message {
+  color: #16a34a;
+  font-size: 1rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}

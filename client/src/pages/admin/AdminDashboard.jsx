@@ -4,7 +4,7 @@ import '../../styles/Admin.css';
 
 const AdminDashboard = () => {
   return (
-    <section className="admin-dashboard">
+    <section className="admin-dashboard w-full min-h-screen p-8 box-border">
       <h1>Admin Dashboard</h1>
       <p>Welcome to the admin dashboard.</p>
       <nav className="admin-nav">

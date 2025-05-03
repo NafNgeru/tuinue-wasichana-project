@@ -1,13 +1,28 @@
 .footer {
   background-color: #1f2937; /* gray-800 */
-  padding: 1rem 0;
+  padding: 1.5rem 0;
   color: white;
   text-align: center;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 
 .footer__container {
   max-width: 1024px;
   margin: 0 auto;
-  padding: 0 1rem;
-  font-size: 0.875rem;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .footer__container {
+    font-size: 0.875rem;
+    padding: 0 1rem;
+  }
 }

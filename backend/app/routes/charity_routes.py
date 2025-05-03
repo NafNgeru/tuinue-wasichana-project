@@ -8,6 +8,43 @@ from app import db
 
 charity_bp = Blueprint('charity', __name__)
 
+from app.models.auth_user import User
+from app.models.charity import Charity
+from app import db, bcrypt
+from flask import jsonify, request
+
+@charity_bp.route('/register', methods=['POST'])
+def register_charity():
+    data = request.get_json()
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+    name = data.get('name')
+    phone = data.get('phone')
+    user_type = data.get('userType', 'individual')
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({'error': 'Username already taken'}), 400
+    if User.query.filter_by(email=email).first():
+        return jsonify({'error': 'Email already taken'}), 400
+
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    user = User(username=username, email=email, password=hashed_password)
+    db.session.add(user)
+    db.session.commit()
+
+    charity = Charity(
+        user_id=user.id,
+        full_name=name,
+        contact=phone,
+        email=email,
+        application_status='pending'
+    )
+    db.session.add(charity)
+    db.session.commit()
+
+    return jsonify({'message': 'Charity registered successfully'}), 201
+
 @charity_bp.route('/apply', methods=['POST'])
 # @jwt_required()
 def apply_charity():
@@ -26,6 +63,43 @@ def apply_charity():
     charity.application_status = 'pending'
     db.session.commit()
     return jsonify({'message': 'Application submitted successfully'}), 200
+
+
+@charity_bp.route('/pending', methods=['GET'])
+def get_pending_charities():
+    pending_charities = Charity.query.filter_by(application_status='pending').all()
+    result = [
+        {
+            "id": charity.id,
+            "full_name": charity.full_name,
+            "email": charity.email,
+            "website_url": charity.website_url,
+            "description": charity.description
+        }
+        for charity in pending_charities
+    ]
+    return jsonify(result), 200
+
+
+@charity_bp.route('/<int:id>/approve', methods=['POST'])
+def approve_charity(id):
+    charity = Charity.query.get(id)
+    if not charity:
+        return jsonify({"error": "Charity not found"}), 404
+    charity.application_status = 'approved'
+    db.session.commit()
+    return jsonify({"message": "Charity approved successfully"}), 200
+
+
+@charity_bp.route('/<int:id>', methods=['DELETE'])
+def delete_charity(id):
+    charity = Charity.query.get(id)
+    if not charity:
+        return jsonify({"error": "Charity not found"}), 404
+    db.session.delete(charity)
+    db.session.commit()
+    return jsonify({"message": "Charity deleted successfully"}), 200
+
 
 @charity_bp.route('/', methods=['GET'])
 def get_all_charities():

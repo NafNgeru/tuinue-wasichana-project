@@ -9,6 +9,17 @@ import logging
 auth_bp = Blueprint('auth', __name__)
 logger = logging.getLogger(__name__)
 
+from app.models.auth_user import User
+from app import db, bcrypt
+from flask import jsonify
+
+@auth_bp.route('/check-username/<string:username>', methods=['GET'])
+def check_username(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({'available': False}), 200
+    else:
+        return jsonify({'available': True}), 200
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -19,6 +30,10 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
+        existing_user = User.query.filter_by(username=form.username.data).first()
+        if existing_user:
+            flash('Username already taken. Please choose a different username.', 'danger')
+            return render_template('register.html', title='Register', form=form)
         try:
             hashed_password = bcrypt.generate_password_hash(
                 form.password.data
@@ -43,6 +58,8 @@ def register():
             )
 
     return render_template('register.html', title='Register', form=form)
+
+
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])

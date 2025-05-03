@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchDonations } from "../api"; // Adjust path based on your project structure
+import { fetchDonations } from "../../api"; // Adjust path based on your project structure
 
 export default function CharityDashboard() {
   const [donations, setDonations] = useState([]);
@@ -14,9 +14,9 @@ export default function CharityDashboard() {
     .reduce((sum, d) => sum + d.amount, 0);
 
   return (
-    <div className="flex min-h-screen bg-blue-50">
+    <div className="flex min-h-screen bg-blue-50 w-full h-full">
       {/* Sidebar */}
-      <aside className="w-64 bg-blue-100 shadow-md p-4">
+      <aside className="w-64 bg-blue-100 shadow-md p-4 h-screen overflow-y-auto">
         <h2 className="text-2xl font-bold mb-6">Tuinue Wasichana</h2>
         <nav className="space-y-4 mt-20">
           {["Dashboard", "Donors", "Beneficiaries", "Inventory", "Stories"].map((item, i) => (
@@ -32,7 +32,7 @@ export default function CharityDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 overflow-y-auto h-screen">
         <header className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Charity Dashboard</h1>
         </header>

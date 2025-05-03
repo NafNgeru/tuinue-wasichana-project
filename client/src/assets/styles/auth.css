@@ -1,0 +1,126 @@
+/* Make auth container fill full viewport */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4f8;
+  box-sizing: border-box;
+}
+
+.auth-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 0;
+  box-shadow: none;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  font-size: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow-y: auto;
+}
+
+.auth-container h2 {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 1.75rem;
+  text-align: left;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.auth-container label {
+  font-weight: 700;
+  color: #222;
+  font-size: 1.125rem;
+  width: 100%;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"],
+.auth-container input[type="tel"] {
+  padding: 1rem 1.25rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-container input[type="text"]:focus,
+.auth-container input[type="email"]:focus,
+.auth-container input[type="password"]:focus,
+.auth-container input[type="tel"]:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.auth-container button[type="submit"] {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 800;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.auth-container button[type="submit"]:hover {
+  background-color: #2563eb;
+}
+
+.auth-container button.login-button {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  text-decoration: underline;
+  font-size: 1.125rem;
+  padding: 0;
+  align-self: flex-start;
+}
+
+.auth-container button.login-button:hover {
+  color: #2563eb;
+}
+
+.auth-container p {
+  margin-top: 1.5rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+  text-align: left;
+}
+
+.auth-container p.text-green-600 {
+  color: #16a34a;
+}
+
+.auth-container p.text-red-600 {
+  color: #dc2626;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  .auth-container {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+}

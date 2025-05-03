@@ -53,9 +53,9 @@ const LoginForm = () => {
   };
 
   return (
-    <section className="max-w-md mx-auto p-4">
+    <section className="max-w-md mx-auto p-4 auth-container">
       <h2 className="text-2xl font-bold mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 auth-form">
         <label className="flex flex-col">
           Username:
           <input
@@ -86,7 +86,11 @@ const LoginForm = () => {
           Login
         </button>
       </form>
-      {message && <p className="mt-4 text-red-600">{message}</p>}
+      <div className="auth-links mt-4 flex gap-4 justify-center">
+        <button onClick={() => navigate('/register')} className="underline text-blue-600 hover:text-blue-800">Register</button>
+        <button onClick={() => navigate('/reset-password')} className="underline text-blue-600 hover:text-blue-800">Reset Password</button>
+      </div>
+      {message && <p className="mt-4 text-red-600 text-center">{message}</p>}
     </section>
   );
 };

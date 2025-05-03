@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import '../../assets/styles/auth.css';
 
 const CharityRegistration = () => {
   const { userType } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -58,10 +60,10 @@ const CharityRegistration = () => {
   };
 
   return (
-    <section className="max-w-md mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Charity Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <label className="flex flex-col">
+    <section className="auth-container">
+      <h2>Charity Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
           Charity Name:
           <input
             type="text"
@@ -69,10 +71,9 @@ const CharityRegistration = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
           />
         </label>
-        <label className="flex flex-col">
+        <label>
           Email:
           <input
             type="email"
@@ -80,10 +81,9 @@ const CharityRegistration = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
           />
         </label>
-        <label className="flex flex-col">
+        <label>
           Username:
           <input
             type="text"
@@ -91,10 +91,10 @@ const CharityRegistration = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            className={`border rounded px-3 py-2 mt-1 ${usernameAvailable ? 'border-gray-300' : 'border-red-600'}`}
+            className={usernameAvailable ? '' : 'input-error'}
           />
         </label>
-        <label className="flex flex-col">
+        <label>
           Password:
           <input
             type="password"
@@ -102,10 +102,9 @@ const CharityRegistration = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
           />
         </label>
-        <label className="flex flex-col">
+        <label>
           Phone Number:
           <input
             type="tel"
@@ -113,17 +112,14 @@ const CharityRegistration = () => {
             value={formData.phone}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
           />
         </label>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
-        >
-          Register
-        </button>
+        <button type="submit">Register</button>
       </form>
-      {message && <p className={`mt-4 ${usernameAvailable ? 'text-green-600' : 'text-red-600'}`}>{message}</p>}
+      <button onClick={() => navigate('/login')} className="login-button" type="button">
+        Already have an account? Login
+      </button>
+      {message && <p className={usernameAvailable ? 'text-green-600' : 'text-red-600'}>{message}</p>}
     </section>
   );
 };

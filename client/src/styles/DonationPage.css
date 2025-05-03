@@ -1,125 +1,146 @@
 .donation-container {
-    display: flex;
-    background-color: rgb(124, 124, 160);
-    min-height: 100vh;
-    padding: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #7c7ca0;
+  min-height: 100vh;
+  padding: 30px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  color: #1f2937;
+}
+
+.donation-left, .donation-right {
+  flex: 1 1 100%;
+  padding: 25px;
+  box-sizing: border-box;
 }
 
 .donation-left {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .paypal-logo {
-    width: 150px;
+  width: 180px;
+  max-width: 80%;
 }
 
 .donation-right {
-    flex: 2;
-    padding: 20px;
+  text-align: center;
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
 .quick-amounts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
 }
 
 .amount-button {
-    background-color: #d8d8d8;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+  background-color: #d8d8d8;
+  border: none;
+  padding: 12px 25px;
+  font-size: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .amount-button:hover {
-    background-color: #bfcfd8;
-    transform: scale(1.05);
+  background-color: #bfcfd8;
+  transform: scale(1.05);
 }
 
-
-/* Highlight selected quick amount */
-
 .amount-button.selected {
-    background-color: #0070ba;
-    color: white;
-    border: 2px solid #005c9d;
+  background-color: #0070ba;
+  color: white;
+  border: 2px solid #005c9d;
 }
 
 .amount-input {
-    display: block;
-    margin: 20px auto;
-    width: 200px;
-    text-align: center;
-    padding: 10px;
-    font-size: 20px;
-    background-color: #d8d8d8;
-    border: none;
-    border-radius: 5px;
+  display: block;
+  margin: 25px auto;
+  width: 220px;
+  max-width: 90%;
+  text-align: center;
+  padding: 12px;
+  font-size: 20px;
+  background-color: #d8d8d8;
+  border: none;
+  border-radius: 8px;
 }
 
 .options {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 20px 0;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin: 25px 0;
 }
 
 .option-label {
-    background-color: #deb4b4;
-    padding: 8px 12px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 4px #888;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
+  background-color: #deb4b4;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px #888;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
 }
 
 .option-label input {
-    margin-right: 8px;
+  margin-right: 10px;
 }
 
 .buttons-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 25px;
 }
 
 .reminder-button {
-    background-color: #d8d8d8;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: #d8d8d8;
+  border: none;
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .reminder-button:hover {
-    background-color: #bfcfd8;
+  background-color: #bfcfd8;
 }
 
 .paypal-donate-button {
-    background: none;
-    border: none;
-    cursor: pointer;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .paypal-donate-image {
-    width: 150px;
+  width: 180px;
+  max-width: 80%;
+}
+
+/* Mobile responsive tweaks */
+@media (min-width: 768px) {
+  .donation-left {
+    flex: 1;
+  }
+
+  .donation-right {
+    flex: 2;
+    text-align: left;
+  }
 }

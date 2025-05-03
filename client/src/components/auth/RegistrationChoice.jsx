@@ -4,45 +4,43 @@ import { useNavigate } from 'react-router-dom';
 const RegistrationChoice = () => {
   const navigate = useNavigate();
 
-  const handleChoice = (type, userType) => {
-    if (type === 'donor') {
-      navigate(`/register/donor/${userType}`);
-    } else if (type === 'charity') {
-      navigate(`/register/charity/${userType}`);
-    }
-  };
-
   return (
-    <section className="max-w-md mx-auto p-4 text-center">
-      <h2 className="text-2xl font-bold mb-4">Register as Donor or Charity</h2>
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Donor Registration</h3>
+    <section className="max-w-md mx-auto p-4 auth-container text-center">
+      <h2 className="text-2xl font-bold mb-6">Choose Registration Type</h2>
+      <div className="flex flex-col gap-4">
+        <h3 className="text-xl font-semibold">Donor Registration</h3>
         <button
-          onClick={() => handleChoice('donor', 'individual')}
-          className="bg-green-600 text-white rounded px-4 py-2 mr-2 hover:bg-green-700"
+          onClick={() => navigate('/register/donor/individual')}
+          className="bg-blue-600 text-white rounded px-6 py-3 hover:bg-blue-700"
         >
-          Individual
+          Individual Donor
         </button>
         <button
-          onClick={() => handleChoice('donor', 'organization')}
-          className="bg-green-600 text-white rounded px-4 py-2 hover:bg-green-700"
+          onClick={() => navigate('/register/donor/organization')}
+          className="bg-blue-600 text-white rounded px-6 py-3 hover:bg-blue-700"
         >
-          Organization
+          Organization Donor
         </button>
-      </div>
-      <div>
-        <h3 className="text-xl font-semibold mb-2">Charity Registration</h3>
+
+        <h3 className="text-xl font-semibold mt-6">Charity Registration</h3>
         <button
-          onClick={() => handleChoice('charity', 'individual')}
-          className="bg-purple-600 text-white rounded px-4 py-2 mr-2 hover:bg-purple-700"
+          onClick={() => navigate('/register/charity/individual')}
+          className="bg-green-600 text-white rounded px-6 py-3 hover:bg-green-700"
         >
-          Individual
+          Individual Charity
         </button>
         <button
-          onClick={() => handleChoice('charity', 'organization')}
-          className="bg-purple-600 text-white rounded px-4 py-2 hover:bg-purple-700"
+          onClick={() => navigate('/register/charity/organization')}
+          className="bg-green-600 text-white rounded px-6 py-3 hover:bg-green-700"
         >
-          Organization
+          Organization Charity
+        </button>
+
+        <button
+          onClick={() => navigate('/login')}
+          className="underline text-blue-600 hover:text-blue-800 mt-6"
+        >
+          Back to Login
         </button>
       </div>
     </section>
