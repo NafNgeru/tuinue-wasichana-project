@@ -12,4 +12,3 @@ const Payment = () => {
 
 
 export default Payment;
-e
