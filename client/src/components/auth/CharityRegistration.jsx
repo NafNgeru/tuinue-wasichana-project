@@ -30,10 +30,11 @@ const CharityRegistration = () => {
 
   const checkUsername = async (username) => {
     try {
-      const response = await api.get(`/auth/check-username/${username}`);
+      const response = await api.get(`http://localhost:5000/auth/users/${username}`);
       setUsernameAvailable(response.data.available);
       return response.data.available;
     } catch {
+      console.error("Error checking:", error);
       setUsernameAvailable(false);
       return false;
     }
@@ -50,10 +51,12 @@ const CharityRegistration = () => {
       setMessage('Username already taken. Please try another.');
       return;
     }
+
     try {
-      await api.post('/charities/register', formData);
+      await api.post('http://localhost:5000/auth/register_charity', formData);
       setMessage('Registration successful!');
       setFormData({name: '', email: '', username: '', password: '', phone: '', userType: userType || 'individual'});
+      setTimeout(() => navigate('/login'), 2000);
     } catch {
       setMessage('Registration failed. Please try again.');
     }

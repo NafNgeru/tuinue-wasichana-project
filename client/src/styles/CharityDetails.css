@@ -63,7 +63,18 @@
     padding: 1.5rem;
     margin: 1.5rem;
   }
+<<<<<<< HEAD
 
+=======
+  
+  /* .charity-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  } */
+  
+>>>>>>> 319f341 (Authentication set up and working)
   .charity-name {
     font-size: 1.75rem;
   }

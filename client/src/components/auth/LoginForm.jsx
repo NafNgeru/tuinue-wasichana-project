@@ -20,10 +20,10 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.username.length < 5) {
-      setMessage('Username must be at least 6 characters long.');
-      return;
-    }
+    // if (formData.username.length < 3) {
+    //   setMessage('Username must be at least 4 characters long.');
+    //   return;
+    // }
 
     // Admin login check
     if (formData.username === 'admin' && formData.password === 'admin') {
@@ -33,7 +33,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await api.post('/auth/login', formData);
+      const response = await api.post('http://localhost:5000/auth/login', formData);
       // Assuming response contains user role and token
       const { role } = response.data;
       dispatch(setUser(response.data));
@@ -64,7 +64,7 @@ const LoginForm = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            minLength={6}
+            minLength={3}
             className="border border-gray-300 rounded px-3 py-2 mt-1"
           />
         </label>

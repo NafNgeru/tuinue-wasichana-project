@@ -3,32 +3,32 @@ import "../../styles/CharityListingPage.css"
 import { useNavigate } from 'react-router-dom'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
-function CharityCard({item}){
+function CharityCard({charity}){
     const navigate = useNavigate ();
     const [favorites, setFavorite] = useState([]);
 
-    const toggleFavorite = (item) => {
+    const toggleFavorite = (charity) => {
         setFavorite(prev => {
-            const exists = prev.find(fav => fav.id === item.id);
+            const exists = prev.find(fav => fav.id === charity.id);
             return exists
-            ? prev.filter(fav => fav.id !== item.id) : [...prev, item];
+            ? prev.filter(fav => fav.id !== charity.id) : [...prev, charity];
         })
     }
 
-    const isFavorite = (itemId) => {
-        return favorites.some(fav => fav.id === itemId); //.some() returns a boolean value true or false when checking if an item is favorite or not
+    const isFavorite = (charityId) => {
+        return favorites.some(fav => fav.id === charityId); //.some() returns a boolean value true or false when checking if an item is favorite or not
     }
 
-    const favorited = isFavorite(item.id);
+    const favorited = isFavorite(charity.id);
 
     return(
     <div className="menu-card">
-      <img className="item-image" alt="charity" src={item.image_url} />
-      <h2 className="item-title">{item.name}</h2>
+      <img className="item-image" alt="charity" src={charity.image} />
+      <h2 className="item-title">{charity.full_name}</h2>
       <div className="card-buttons">
-        <button className="donate" onClick={() => navigate('/payment-page')}><p>Donate</p></button>
-        <button className="view" onClick={() => navigate('/charity-details')}>View</button>
-        <button className="favorite" onClick={() => toggleFavorite(item)}>
+        <button className="donate" onClick={() => navigate('/donate')}><p>Donate</p></button>
+        <button className="view" onClick={() => navigate(`/charity-details/${charity.id}/`)}>View</button>
+        <button className="favorite" onClick={() => toggleFavorite(charity)}>
           {favorited ? <AiFillHeart color="red" /> : <AiOutlineHeart />}
         </button>
       </div>
@@ -41,30 +41,25 @@ function CharityListingPage(){
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      fetch("http://127.0.0.1:5000")
+      fetch("http://127.0.0.1:5000/charities/")
         .then((res) => res.json())
         .then((data) => {
-          const transformed = data.map(row => ({
-            id: row[0],
-            name: row[1],
-            image_url: row[2],
-          }));
-    
-        //   console.log("Transformed Data:", transformed);
-          setCharityItems(transformed);charities
+          setCharityItems(data);
           setLoading(false);
         })
-        .catch(err => console.error('Fetch error:', err));
-        setLoading(false);
-    }, []);
+        .catch(err => {
+          console.error('Fetch error:', err);
+          setLoading(false);
+        });
+    }, []);    
 
     if (loading) return <p>Loading...</p>;
 
     return (
         <div className="app">
           <div className="menu-grid">
-            {charityItem.map(item => (
-              <CharityCard key={item.id} item={item} />
+            {charityItem.map(charity => (
+              <CharityCard key={charity.id} charity={charity} />
             ))}
           </div>
         </div>
