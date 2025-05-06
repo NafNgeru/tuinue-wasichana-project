@@ -64,21 +64,29 @@ def register_donor():
         logger.error(f"Registration error: {e}")
         return jsonify({"message": "Registration failed"}), 500
     
+from werkzeug.utils import secure_filename
+import os
+
 @auth_bp.route('/register_charity', methods=['POST'])
 def register_charity():
     if current_user.is_authenticated:
         return jsonify({"message": "Already logged in"}), 400
 
-    data = request.get_json()
-    if not data:
-        return jsonify({"message": "Missing JSON data"}), 400
+    if 'logo' not in request.files:
+        return jsonify({"message": "Logo file is required"}), 400
 
-    # Extract fields
-    username = data.get('username')
-    email = data.get('email')
-    password = data.get('password')
-    name = data.get('name')
-    phone = data.get('phone')
+    logo = request.files['logo']
+    if logo.filename == '':
+        return jsonify({"message": "No selected file"}), 400
+
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+
+    if not username or not email or not password or not name or not phone:
+        return jsonify({"message": "Missing required fields"}), 400
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -88,21 +96,27 @@ def register_charity():
         password=hashed_password,
         contact=phone,
         full_name=name,
-        role="charity"  # Since role column is set to default "donor" value 
+        role="charity"
     )
     db.session.add(new_user)
     db.session.flush()
+
+    filename = secure_filename(logo.filename)
+    upload_folder = os.path.join(os.getcwd(), 'backend', 'app', 'static', 'uploads')
+    os.makedirs(upload_folder, exist_ok=True)
+    file_path = os.path.join(upload_folder, filename)
+    logo.save(file_path)
 
     charity = Charity(
         user_id=new_user.id,
         full_name=new_user.full_name,
         email=new_user.email,
-        password_hash=new_user.password,  
-        contact=new_user.contact
-        )
-    
-    db.session.add(charity)
+        password_hash=new_user.password,
+        contact=new_user.contact,
+        image=f'/static/uploads/{filename}'
+    )
 
+    db.session.add(charity)
     db.session.commit()
 
     return jsonify({"message": "Charity account created successfully"}), 201

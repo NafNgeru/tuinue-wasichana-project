@@ -46,39 +46,40 @@ def get_all_charities():
 
 from flask import jsonify
 
-# @charity_bp.route('/pending', methods=['GET'])
-# def get_pending_charities():
-#     pending_charities = Charity.query.filter_by(application_status='pending').all()
-#     result = [
-#         {
-#             "id": charity.id,
-#             "full_name": charity.full_name,
-#             "email": charity.email,
-#             "website_url": charity.website_url,
-#             "description": charity.description,
-#             "image": charity.image
-#         }
-#         for charity in pending_charities
-#     ]
-#     return jsonify(result), 200
+@charity_bp.route('/pending', methods=['GET'])
+def get_pending_charities():
+    pending_charities = Charity.query.filter_by(application_status='pending').all()
+    result = [
+        {
+            "id": charity.id,
+            "full_name": charity.full_name,
+            "email": charity.email,
+            "website_url": charity.website_url,
+            "description": charity.description,
+            "image": charity.image,
+            "application_status": charity.application_status
+        }
+        for charity in pending_charities
+    ]
+    return jsonify(result), 200
 
-# @charity_bp.route('/<int:id>/approve', methods=['POST'])
-# def approve_charity(id):
-#     charity = Charity.query.get(id)
-#     if not charity:
-#         return jsonify({"error": "Charity not found"}), 404
-#     charity.application_status = 'approved'
-#     db.session.commit()
-#     return jsonify({"message": "Charity approved successfully"}), 200
+@charity_bp.route('/<int:id>/approve', methods=['POST'])
+def approve_charity(id):
+    charity = Charity.query.get(id)
+    if not charity:
+        return jsonify({"error": "Charity not found"}), 404
+    charity.application_status = 'approved'
+    db.session.commit()
+    return jsonify({"message": "Charity approved successfully"}), 200
 
-# @charity_bp.route('/<int:id>/decline', methods=['POST'])
-# def decline_charity(id):
-#     charity = Charity.query.get(id)
-#     if not charity:
-#         return jsonify({"error": "Charity not found"}), 404
-#     charity.application_status = 'declined'
-#     db.session.commit()
-#     return jsonify({"message": "Charity declined successfully"}), 200
+@charity_bp.route('/<int:id>/decline', methods=['POST'])
+def decline_charity(id):
+    charity = Charity.query.get(id)
+    if not charity:
+        return jsonify({"error": "Charity not found"}), 404
+    charity.application_status = 'declined'
+    db.session.commit()
+    return jsonify({"message": "Charity declined successfully"}), 200
 
 @charity_bp.route('/<int:id>', methods=['GET'])
 def get_charity_by_id(id):
@@ -170,26 +171,43 @@ def total_donations(charity_id):
         "total_donated": total or 0.0
     }), 200
 
-@charity_bp.route('/<int:charity_id>/donations', methods=['GET'])
-def get_charity_donations(charity_id):
-    charity = Charity.query.get(charity_id)
+@charity_bp.route('/<int:id>', methods=['DELETE'])
+def delete_charity(id):
+    charity = Charity.query.get(id)
     if not charity:
-        return jsonify({'error': 'Charity not found'}), 404
+        return jsonify({"error": "Charity not found"}), 404
+    db.session.delete(charity)
+    db.session.commit()
+    return jsonify({"message": "Charity deleted successfully"}), 200
 
-    total = sum(d.amount for d in charity.donations)
-
-    donations = [
+@charity_bp.route('/admin/charities', methods=['GET'])
+def get_charities_with_status():
+    charities = Charity.query.all()
+    result = [
         {
-            'amount': d.amount,
-            'date': d.date.isoformat(),
-            'donor': d.donor.full_name
+            "id": charity.id,
+            "full_name": charity.full_name,
+            "email": charity.email,
+            "website_url": charity.website_url,
+            "description": charity.description,
+            "image": charity.image,
+            "application_status": charity.application_status
         }
-        for d in charity.donations
+        for charity in charities
     ]
+    return jsonify(result), 200
+
+@charity_bp.route('/admin/donation-stats', methods=['GET'])
+def get_donation_stats():
+    total_donations = db.session.query(func.count()).select_from(Donation).scalar()
+    pending_donations = db.session.query(func.count()).select_from(Donation).filter(Donation.status == 'pending').scalar()
+    in_progress_donations = db.session.query(func.count()).select_from(Donation).filter(Donation.status == 'in_progress').scalar()
+    total_amount = db.session.query(func.sum(Donation.amount)).scalar() or 0
 
     return jsonify({
-        'charity': charity.full_name,
-        'total_donations': total,
-        'donations': donations
+        "total_donations": total_donations,
+        "pending_donations": pending_donations,
+        "in_progress_donations": in_progress_donations,
+        "total_amount": total_amount
     })
 

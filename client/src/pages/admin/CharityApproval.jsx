@@ -41,6 +41,15 @@ const CharityApproval = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/charity/${id}`);
+      fetchCharities();
+    } catch (error) {
+      console.error('Error deleting charity:', error);
+    }
+  };
+
   if (loading) {
     return <p>Loading charities...</p>;
   }
@@ -62,15 +71,20 @@ const CharityApproval = () => {
       ) : (
         <ul>
           {pendingCharities.map((charity) => (
-            <li key={charity.id} style={{ marginBottom: '1rem' }}>
-              <strong>{charity.full_name}</strong> - {charity.email}
-              <div>
-                <button onClick={() => handleApprove(charity.id)} style={{ marginRight: '0.5rem' }}>
-                  Approve
-                </button>
-                <button onClick={() => handleDecline(charity.id)}>Decline</button>
-              </div>
-            </li>
+          <li key={charity.id} style={{ marginBottom: '1rem' }}>
+            <strong>{charity.full_name}</strong> - {charity.email}
+            <div>
+              <button onClick={() => handleApprove(charity.id)} style={{ marginRight: '0.5rem' }}>
+                Approve
+              </button>
+              <button onClick={() => handleDecline(charity.id)} style={{ marginRight: '0.5rem' }}>
+                Decline
+              </button>
+              <button onClick={() => handleDelete(charity.id)} style={{ marginRight: '0.5rem' }}>
+                Delete
+              </button>
+            </div>
+          </li>
           ))}
         </ul>
       )}

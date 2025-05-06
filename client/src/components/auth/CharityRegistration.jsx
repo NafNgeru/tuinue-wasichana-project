@@ -13,6 +13,7 @@ const CharityRegistration = () => {
     phone: '',
     userType: userType || 'individual',
   });
+  const [logoFile, setLogoFile] = useState(null);
   const [message, setMessage] = useState('');
   const [usernameAvailable, setUsernameAvailable] = useState(true);
 
@@ -25,6 +26,10 @@ const CharityRegistration = () => {
     if (e.target.name === 'username') {
       setUsernameAvailable(true);
     }
+  };
+
+  const handleFileChange = (e) => {
+    setLogoFile(e.target.files[0]);
   };
 
   const checkUsername = async (username) => {
@@ -52,9 +57,25 @@ const CharityRegistration = () => {
     }
 
     try {
-      await api.post('http://localhost:5000/auth/register_charity', formData);
+      const formPayload = new FormData();
+      formPayload.append('username', formData.username);
+      formPayload.append('email', formData.email);
+      formPayload.append('password', formData.password);
+      formPayload.append('name', formData.name);
+      formPayload.append('phone', formData.phone);
+      formPayload.append('userType', formData.userType);
+      if (logoFile) {
+        formPayload.append('logo', logoFile);
+      }
+
+      await api.post('http://localhost:5000/auth/register_charity', formPayload, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setMessage('Registration successful!');
       setFormData({name: '', email: '', username: '', password: '', phone: '', userType: userType || 'individual'});
+      setLogoFile(null);
       setTimeout(() => navigate('/login'), 2000);
     } catch {
       setMessage('Registration failed. Please try again.');
@@ -64,7 +85,7 @@ const CharityRegistration = () => {
   return (
     <section className="max-w-md mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Charity Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" encType="multipart/form-data">
         <label className="flex flex-col">
           Charity Name:
           <input
@@ -117,6 +138,16 @@ const CharityRegistration = () => {
             value={formData.phone}
             onChange={handleChange}
             required
+            className="border border-gray-300 rounded px-3 py-2 mt-1"
+          />
+        </label>
+        <label className="flex flex-col">
+          Logo:
+          <input
+            type="file"
+            name="logo"
+            accept="image/*"
+            onChange={handleFileChange}
             className="border border-gray-300 rounded px-3 py-2 mt-1"
           />
         </label>

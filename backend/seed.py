@@ -127,6 +127,7 @@ with app.app_context():
             full_name=item["full_name"],
             email=item["email"],
             contact=item["contact"],
+            password_hash=hashed_pw,
             description=item["description"],
             website_url=item["website_url"],
             image=item["image"],
