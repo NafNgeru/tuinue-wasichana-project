@@ -12,7 +12,7 @@ const HomePage = () => {
   };
 
   const handleDonateClick = () => {
-    navigate('/donation'); // Redirect to donation page
+    navigate('/charities'); // Redirect to charities listing page
   };
 
   useEffect(() => {
