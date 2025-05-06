@@ -42,22 +42,63 @@ def get_all_charities():
         for charity in charities
     ]
     return jsonify(result), 200
+    
+
+from flask import jsonify
+
+# @charity_bp.route('/pending', methods=['GET'])
+# def get_pending_charities():
+#     pending_charities = Charity.query.filter_by(application_status='pending').all()
+#     result = [
+#         {
+#             "id": charity.id,
+#             "full_name": charity.full_name,
+#             "email": charity.email,
+#             "website_url": charity.website_url,
+#             "description": charity.description,
+#             "image": charity.image
+#         }
+#         for charity in pending_charities
+#     ]
+#     return jsonify(result), 200
+
+# @charity_bp.route('/<int:id>/approve', methods=['POST'])
+# def approve_charity(id):
+#     charity = Charity.query.get(id)
+#     if not charity:
+#         return jsonify({"error": "Charity not found"}), 404
+#     charity.application_status = 'approved'
+#     db.session.commit()
+#     return jsonify({"message": "Charity approved successfully"}), 200
+
+# @charity_bp.route('/<int:id>/decline', methods=['POST'])
+# def decline_charity(id):
+#     charity = Charity.query.get(id)
+#     if not charity:
+#         return jsonify({"error": "Charity not found"}), 404
+#     charity.application_status = 'declined'
+#     db.session.commit()
+#     return jsonify({"message": "Charity declined successfully"}), 200
 
 @charity_bp.route('/<int:id>', methods=['GET'])
 def get_charity_by_id(id):
-    charity = Charity.query.get(id)
-    if not charity:
-        return jsonify({"error": "Charity not found"}), 404
+    try:
+        charity = Charity.query.get(id)
+        if not charity:
+            return jsonify({"error": "Charity not found"}), 404
 
-    result = {
-        "id": charity.id,
-        "full_name": charity.full_name,
-        "email": charity.email,
-        "website_url": charity.website_url,
-        "description": charity.description,
-        "image": charity.image
-    }
-    return jsonify(result), 200
+        result = {
+            "id": charity.id,
+            "full_name": charity.full_name,
+            "email": charity.email,
+            "website_url": charity.website_url,
+            "description": charity.description,
+            "image": charity.image
+        }
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
 
 @charity_bp.route('/donors', methods=['GET'])
 # @jwt_required()

@@ -35,13 +35,15 @@ const LoginForm = () => {
     try {
       const response = await api.post('http://localhost:5000/auth/login', formData);
       // Assuming response contains user role and token
-      const { role } = response.data;
-      dispatch(setUser(response.data));
+      const user = response.data;
+      const { role } = user;
+      dispatch(setUser(user));
+      localStorage.setItem('user', JSON.stringify(user));
 
       if (role === 'donor') {
-        navigate('/donor');
+        navigate(`/donor/${user.donor.id}`);
       } else if (role === 'charity') {
-        navigate('/charity');
+        navigate(`/charity/${user.charity.id}`);
       } else if (role === 'admin') {
         navigate('/admin');
       } else {
@@ -86,6 +88,20 @@ const LoginForm = () => {
           Login
         </button>
       </form>
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={() => navigate('/register')}
+          className="bg-green-600 text-white rounded px-4 py-2 hover:bg-green-700"
+        >
+          Register
+        </button>
+        <button
+          onClick={() => navigate('/reset-password')}
+          className="bg-yellow-600 text-white rounded px-4 py-2 hover:bg-yellow-700"
+        >
+          Forget Password
+        </button>
+      </div>
       {message && <p className="mt-4 text-red-600">{message}</p>}
     </section>
   );

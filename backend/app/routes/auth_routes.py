@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db, bcrypt
-from app.models import User
+from app.models import User, Donor, Charity
 # from app.models.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm
 # from app.utils import send_reset_email
 import logging
@@ -44,7 +44,19 @@ def register_donor():
             is_admin=(email.lower() == 'admin@example.com'),
         )
         db.session.add(user)
+        db.session.flush()
+
+        donor = Donor(
+            user_id=user.id,    
+            full_name=user.full_name,
+            email=user.email,
+            password_hash=user.password,  
+            contact=user.contact
+        )
+        db.session.add(donor)
+
         db.session.commit()
+
         logger.info(f"Registered new user: {email}")
         return jsonify({"message": "Registration successful"}), 201
     except Exception as e:
@@ -79,6 +91,18 @@ def register_charity():
         role="charity"  # Since role column is set to default "donor" value 
     )
     db.session.add(new_user)
+    db.session.flush()
+
+    charity = Charity(
+        user_id=new_user.id,
+        full_name=new_user.full_name,
+        email=new_user.email,
+        password_hash=new_user.password,  
+        contact=new_user.contact
+        )
+    
+    db.session.add(charity)
+
     db.session.commit()
 
     return jsonify({"message": "Charity account created successfully"}), 201
@@ -111,7 +135,9 @@ def login():
             'username': user.username,
             'email': user.email,
             'role': user.role,  
-            'id': user.id
+            'id': user.id, 
+            'donor': {"id": user.donor.id} if user.donor else None,
+            'charity': {"id": user.charity.id} if user.charity else None
             }), 200
     else:
         return jsonify({"message": "Invalid credentials"}), 401
@@ -134,7 +160,9 @@ def get_users():
             "username": user.username,
             "email": user.email,
             "is_admin": user.is_admin, 
-            "role": user.role
+            "role": user.role,
+            "donor": {"id": user.donor.id} if user.donor else None,
+            "charity": {"id": user.charity.id} if user.charity else None
         }
         for user in users
     ]

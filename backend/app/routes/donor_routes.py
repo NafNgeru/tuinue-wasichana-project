@@ -20,28 +20,28 @@ def get_charities():
         } for c in charities
     ]), 200
 
-@donor_bp.route('/register', methods=['GET', 'POST'])
-def register_donor():
-    if current_user.is_authenticated:
-        flash('You are already logged in.', 'info')
-        return redirect(url_for('main.home'))
+# @donor_bp.route('/register', methods=['GET', 'POST'])
+# def register_donor():
+#     if current_user.is_authenticated:
+#         flash('You are already logged in.', 'info')
+#         return redirect(url_for('main.home'))
 
-    if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        # Add validation and password hashing here
-        # Create donor user
-        donor = Donor(username=username, email=email)
-        # Set password hashed
-        donor.set_password(password)
-        db.session.add(donor)
-        db.session.commit()
-        flash('Donor registered successfully. Please log in.', 'success')
-        logger.info(f"New donor registered: {email}")
-        return redirect(url_for('auth.login'))
+#     if request.method == 'POST':
+#         username = request.form.get('username')
+#         email = request.form.get('email')
+#         password = request.form.get('password')
+#         # Add validation and password hashing here
+#         # Create donor user
+#         donor = Donor(username=username, email=email)
+#         # Set password hashed
+#         donor.set_password(password)
+#         db.session.add(donor)
+#         db.session.commit()
+#         flash('Donor registered successfully. Please log in.', 'success')
+#         logger.info(f"New donor registered: {email}")
+#         return redirect(url_for('auth.login'))
 
-    return render_template('donor_register.html')
+#     return render_template('donor_register.html')
 
 @donor_bp.route('/donate', methods=['POST'])
 @login_required

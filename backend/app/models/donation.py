@@ -12,6 +12,7 @@ class Donation(db.Model):
     anonymous = db.Column(db.Boolean, default=False)
     repeat_donation = db.Column(db.Boolean, default=False)
     reminder_set = db.Column(db.Boolean, default=False)
+    frequency = db.Column(db.String(20), nullable=False)
 
     #relationship links
     donor = db.relationship("Donor", back_populates="donations", overlaps="charities_donated_to")
@@ -24,8 +25,12 @@ class Donation(db.Model):
             'charity_id': self.charity_id,
             'amount': self.amount,
             'date': self.date.isoformat() if self.date else None,
+            'frequency': self.frequency,
             'donor_name': self.donor.full_name if self.donor and not self.anonymous else 'Anonymous'
         }
+    
+    def __repr__(self):
+        return f"<Donation id={self.id}, amount={self.amount}, frequency={self.frequency}, anonymous={self.anonymous}>"
 
     def __repr__(self):
         charity_name = self.charity.full_name if self.charity else 'Unknown Charity'

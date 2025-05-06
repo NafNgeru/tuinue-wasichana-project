@@ -32,7 +32,7 @@ const CharityRegistration = () => {
       const response = await api.get(`http://localhost:5000/auth/check-username/${username}`);
       setUsernameAvailable(response.data.available);
       return response.data.available;
-    } catch {
+    } catch (error) {
       console.error("Error checking:", error);
       setUsernameAvailable(false);
       return false;
@@ -127,6 +127,12 @@ const CharityRegistration = () => {
           Register
         </button>
       </form>
+      <button
+        onClick={() => navigate('/login')}
+        className="mt-4 bg-gray-600 text-white rounded px-4 py-2 hover:bg-gray-700"
+      >
+        Login
+      </button>
       {message && <p className={`mt-4 ${usernameAvailable ? 'text-green-600' : 'text-red-600'}`}>{message}</p>}
     </section>
   );

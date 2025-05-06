@@ -12,8 +12,8 @@ class Charity(db.Model):
     full_name = db.Column(db.String(150), nullable=False)
     contact = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String, nullable=False)
-    #password = db.Column(db.String(150))
-    description = db.Column(db.Text)
+    password_hash = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.Text, nullable=True)
     website_url = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
     approved = db.Column(db.Boolean, default=False)
@@ -26,6 +26,7 @@ class Charity(db.Model):
     stories = db.relationship('Story', back_populates='charity', cascade="all, delete-orphan")
     inventory = db.relationship('Inventory', back_populates='charity', cascade="all, delete-orphan")
     donors = db.relationship('Donor', secondary='donations', back_populates='charities_donated_to', overlaps="donations,donor")
+    beneficiaries = db.relationship("Beneficiary", back_populates="charity")
 
 
 

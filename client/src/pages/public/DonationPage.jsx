@@ -1,31 +1,18 @@
 import React, { useState } from "react";
-// import "./Header.jsx";
-// import "./Footer.jsx";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import "../../styles/DonationPage.css";
 
 const DonationPage = () => {
   const [amount, setAmount] = useState("");
   const [selectedQuickAmount, setSelectedQuickAmount] = useState(null);
   const [anonymous, setAnonymous] = useState(false);
-  const [donationType, setDonationType] = useState("one-time"); // "one-time" or "monthly"
+  const [donationType, setDonationType] = useState("one-time"); 
 
   const quickAmounts = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
   const handleQuickAmountClick = (value) => {
     setAmount(value);
     setSelectedQuickAmount(value);
-  };
-
-  const handleDonate = () => {
-    if (!amount || isNaN(amount) || Number(amount) <= 0) {
-      alert("Please enter a valid donation amount.");
-      return;
-    }
-    alert(
-      `Donating $${amount}${
-        anonymous ? " anonymously" : ""
-      } as a ${donationType} donation.`
-    );
   };
 
   const handleSetReminder = () => {
@@ -111,14 +98,36 @@ const DonationPage = () => {
           <button className="reminder-button" onClick={handleSetReminder}>
             Set Reminder
           </button>
+        </div>
 
-          <button className="paypal-donate-button" onClick={handleDonate}>
-            <img
-              src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-              alt="Donate with PayPal"
-              className="paypal-donate-image"
-            />
-          </button>
+        <div className="paypal-button-wrapper">
+          <PayPalButtons
+            style={{ layout: "vertical" }}
+            disabled={!amount || isNaN(amount) || Number(amount) <= 0}
+            forceReRender={[amount]}
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: amount.toString(),
+                    },
+                  },
+                ],
+              });
+            }}
+            onApprove={(data, actions) => {
+              return actions.order.capture().then((details) => {
+                alert(
+                  `Donation successful! Thank you, ${details.payer.name.given_name}.`
+                );
+              });
+            }}
+            onError={(err) => {
+              console.error("PayPal Checkout error:", err);
+              alert("An error occurred during payment.");
+            }}
+          />
         </div>
       </div>
     </section>

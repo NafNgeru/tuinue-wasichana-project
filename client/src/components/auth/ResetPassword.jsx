@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +33,12 @@ const ResetPassword = () => {
           Send Reset Instructions
         </button>
       </form>
+      <button
+        onClick={() => navigate('/login')}
+        className="mt-4 bg-gray-600 text-white rounded px-4 py-2 hover:bg-gray-700"
+      >
+        Login
+      </button>
       {message && <p className="mt-4 text-green-600">{message}</p>}
     </section>
   );

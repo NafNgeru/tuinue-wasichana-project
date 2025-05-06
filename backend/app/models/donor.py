@@ -6,6 +6,7 @@ class Donor(db.Model):
     __tablename__ = 'donors'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     full_name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)  # Hashed password
@@ -14,10 +15,11 @@ class Donor(db.Model):
     donation_interval = db.Column(db.String(20), nullable=True)  # Frequency of donation: weekly, monthly, etc.
     reminder_set = db.Column(db.Boolean, default=False)  # Reminder for donation
     contact = db.Column(db.String(20), nullable=False)
+    profile_pic = db.Column(db.String(20), nullable=True)
 
     charities_donated_to = db.relationship('Charity', secondary='donations', back_populates='donors', overlaps="donations,charity")
     donations = db.relationship('Donation', back_populates='donor', cascade='all, delete-orphan')
-    user=db.relationship('Donor', back_populates='donor', cascade='all, delete-orphan')
+    user=db.relationship('User', back_populates='donor', uselist=False)
     # charity = db.relationship('Charity', back_populates='donors')
     
     def __repr__(self):

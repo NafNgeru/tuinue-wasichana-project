@@ -1,4 +1,5 @@
 /* Donation Container as a centered square */
+<<<<<<< HEAD
 
 .donation-container {
   width: 1000px;
@@ -193,3 +194,216 @@ h1 {
     flex: 1 1 100%;
   }
 }
+=======
+
+.donation-container {
+    width: 1000px;
+    height: 600px;
+    margin: 50px auto;
+    background-color: #7c7ca0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-radius: 12px;
+    color: #fff;
+    font-family: "Segoe UI", sans-serif;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+  }
+  
+  /* PayPal logo at top */
+  
+  .paypal-header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .paypal-logo {
+    width: 150px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  /* Main content layout inside square */
+  
+  .donation-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .donation-left {
+    flex: 1 1 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .donation-right {
+    flex: 1 1 55%;
+    padding: 1rem;
+    background-color: #5a5a8a;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+  }
+  
+  /* Headings */
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #ffffff;
+  }
+  
+  /* Quick amounts buttons */
+  
+  .quick-amounts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  
+  .amount-button {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    color: #333;
+  }
+  
+  .amount-button:hover {
+    background-color: #c8d8e0;
+    transform: scale(1.05);
+  }
+  
+  .amount-button.selected {
+    background-color: #0070ba;
+    color: white;
+    border: 2px solid #005c9d;
+  }
+  
+  /* Custom input field */
+  
+  .amount-input {
+    display: block;
+    margin: 1rem auto;
+    width: 200px;
+    text-align: center;
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    color: #333;
+  }
+  
+  /* Donation options */
+  
+  .options {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .option-label {
+    background-color: #deb4b4;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    color: #333;
+  }
+  
+  .option-label input {
+    margin-right: 0.5rem;
+  }
+  
+  /* Button row */
+  
+  .buttons-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .reminder-button {
+    background-color: #f1038e;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: white;
+  }
+  
+  .reminder-button:hover {
+    background-color: #d900b5;
+  }
+  
+  /* PayPal donate button */
+  
+  .paypal-donate-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .paypal-donate-image {
+    width: 60px;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .paypal-donate-image:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Responsive for smaller screens */
+  
+  @media (max-width: 640px) {
+    .donation-container {
+      width: 90vw;
+      height: auto;
+    }
+    .donation-main {
+      flex-direction: column;
+    }
+    .donation-left,
+    .donation-right {
+      flex: 1 1 100%;
+    }
+  }
+  
+  
+  .paypal-button-wrapper {
+    margin-top: 20px;
+    align-items: center;
+    width: 100%;
+    padding-left: 200px;
+    padding-right: 0;
+  }
+  
+  .paypal-button-wrapper iframe {
+    max-width: 500px; 
+    width: 100%;
+  }
+  
+>>>>>>> b61c3ad248fc068962b59df12d84c4842fdac8cd
