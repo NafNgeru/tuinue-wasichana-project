@@ -13,6 +13,7 @@ const CharityRegistration = () => {
     password: '',
     phone: '',
     userType: userType || 'individual',
+    logo: null,
   });
   const [message, setMessage] = useState('');
   const [usernameAvailable, setUsernameAvailable] = useState(true);
@@ -22,18 +23,23 @@ const CharityRegistration = () => {
   }, [userType]);
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
-    if (e.target.name === 'username') {
-      setUsernameAvailable(true);
+    const { name, value, files } = e.target;
+    if (name === 'logo') {
+      setFormData({ ...formData, logo: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+      if (name === 'username') {
+        setUsernameAvailable(true);
+      }
     }
   };
 
   const checkUsername = async (username) => {
     try {
-      const response = await api.get(`http://localhost:5000/auth/users/${username}`);
+      const response = await api.get(`http://localhost:5000/auth/check-username/${username}`);
       setUsernameAvailable(response.data.available);
       return response.data.available;
-    } catch {
+    } catch (error) {
       console.error("Error checking:", error);
       setUsernameAvailable(false);
       return false;
@@ -53,11 +59,26 @@ const CharityRegistration = () => {
     }
 
     try {
-      await api.post('http://localhost:5000/auth/register_charity', formData);
+      const data = new FormData();
+      data.append('name', formData.name);
+      data.append('email', formData.email);
+      data.append('username', formData.username);
+      data.append('password', formData.password);
+      data.append('phone', formData.phone);
+      data.append('userType', formData.userType);
+      if (formData.logo) {
+        data.append('logo', formData.logo);
+      }
+
+      await api.post('http://localhost:5000/charity/register', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setMessage('Registration successful!');
-      setFormData({name: '', email: '', username: '', password: '', phone: '', userType: userType || 'individual'});
+      setFormData({ name: '', email: '', username: '', password: '', phone: '', userType: userType || 'individual', logo: null });
       setTimeout(() => navigate('/login'), 2000);
-    } catch {
+    } catch (error) {
       setMessage('Registration failed. Please try again.');
     }
   };
@@ -65,7 +86,7 @@ const CharityRegistration = () => {
   return (
     <section className="auth-container">
       <h2>Charity Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <label>
           Charity Name:
           <input
@@ -115,6 +136,15 @@ const CharityRegistration = () => {
             value={formData.phone}
             onChange={handleChange}
             required
+          />
+        </label>
+        <label>
+          Upload Logo:
+          <input
+            type="file"
+            name="logo"
+            accept="image/*"
+            onChange={handleChange}
           />
         </label>
         <button type="submit">Register</button>

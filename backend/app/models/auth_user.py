@@ -12,6 +12,8 @@ class User(db.Model):
     password = db.Column(db.String(200), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+    charity = db.relationship('Charity', back_populates='user', uselist=False)
+
     def __repr__(self):
         return f'<User {self.username}>'
 
@@ -27,3 +29,4 @@ class User(db.Model):
         except Exception:
             return None
         return User.query.get(user_id)
+
