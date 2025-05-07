@@ -1,0 +1,184 @@
+/* Global Settings */
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdfdfd;
+  margin: 0;
+  padding: 0;
+  color: #1f2937;
+  /* text-gray-800 */
+}
+
+main {
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+
+.hero {
+  position: relative;
+  text-align: center;
+}
+
+.hero img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  filter: brightness(70%);
+}
+
+.hero-content {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Buttons */
+
+button {
+  background-color: #2563eb;
+  /* blue-600 */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #1d4ed8;
+  /* blue-700 */
+  transform: scale(1.05);
+}
+
+/* Donate Button Specific */
+
+button.bg-red-600:hover {
+  background-color: #b91c1c;
+}
+
+/* Impact Section */
+
+.impact-card {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 15rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+}
+
+.impact-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Testimonials */
+
+.testimonial-card {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+  width: 20rem;
+}
+
+.testimonial-card p {
+  margin: 0;
+}
+
+/* CTA Emotional Block */
+
+.cta-section {
+  position: relative;
+  height: 350px;
+}
+
+.cta-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(70%);
+}
+
+.cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Heart Animation */
+
+.heart-icon {
+  animation-fill-mode: forwards;
+}
+
+.heartbeat-slow {
+  animation: heartbeat 2s infinite;
+}
+
+.heartbeat-fast {
+  animation: heartbeat 0.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* Responsive Layout */
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.25rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .impact-card,
+  .testimonial-card {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .cta-overlay h2 {
+    font-size: 1.75rem;
+  }
+  .cta-overlay p {
+    font-size: 1rem;
+  }
+}

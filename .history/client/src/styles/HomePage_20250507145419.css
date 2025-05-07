@@ -1,0 +1,136 @@
+/* Section Layout */
+
+.section {
+  width: 100vw;
+  height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top left, #fef9f9, #f0f4f8);
+  text-align: center;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  animation: fadeIn 1.5s ease-in;
+}
+
+/* Headline */
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #111827;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 6px rgba(255, 75, 43, 0.2);
+}
+
+/* Subtext */
+
+p {
+  margin-bottom: 2rem;
+  max-width: 48rem;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+/* Button Base */
+
+button {
+  border: none;
+  border-radius: 1.5rem;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Login Button */
+
+button:nth-child(1) {
+  background: #3b82f6;
+  color: white;
+}
+
+button:nth-child(1):hover {
+  background: #2563eb;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
+}
+
+/* Donate Button */
+
+button:nth-child(2) {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+button:nth-child(2):hover {
+  transform: scale(1.07);
+  box-shadow: 0 12px 24px rgba(255, 75, 43, 0.4);
+}
+
+/* Heart Animation */
+
+.heart-icon {
+  animation-fill-mode: forwards;
+}
+
+.heartbeat-slow {
+  animation: heartbeat 2s infinite ease-in-out;
+}
+
+.heartbeat-fast {
+  animation: heartbeat 0.5s infinite ease-in-out;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+}
+
+/* Page Entrance Animation */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Friendly */
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.25rem;
+  }
+  p {
+    font-size: 1.1rem;
+    padding: 0 1rem;
+  }
+  button {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
