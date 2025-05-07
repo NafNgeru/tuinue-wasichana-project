@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
 import axios from "axios"; // Added axios
-=======
-import { PayPalButtons } from "@paypal/react-paypal-js";
->>>>>>> b61c3ad248fc068962b59df12d84c4842fdac8cd
+import { PayPalButtons } from "@paypal/react-paypal-js"; // Added PayPal integration
 import "../../styles/DonationPage.css";
 
 const DonationPage = () => {
   const [amount, setAmount] = useState("");
   const [selectedQuickAmount, setSelectedQuickAmount] = useState(null);
   const [anonymous, setAnonymous] = useState(false);
-  const [donationType, setDonationType] = useState("one-time"); 
+  const [donationType, setDonationType] = useState("one-time");
 
   const quickAmounts = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
@@ -19,7 +16,6 @@ const DonationPage = () => {
     setSelectedQuickAmount(value);
   };
 
-<<<<<<< HEAD
   const handleDonate = async () => {
     if (!amount || isNaN(amount) || Number(amount) <= 0) {
       alert("Please enter a valid donation amount.");
@@ -46,8 +42,6 @@ const DonationPage = () => {
     }
   };
 
-=======
->>>>>>> b61c3ad248fc068962b59df12d84c4842fdac8cd
   const handleSetReminder = () => {
     if (donationType === "monthly") {
       alert("Monthly donation reminder has been set!");
@@ -133,15 +127,16 @@ const DonationPage = () => {
           </button>
         </div>
 
-<<<<<<< HEAD
-          <button className="paypal-donate-button" onClick={handleDonate}>
-            <img
-              src="src/assets/paypal donate.jpg"
-              alt="Donate with PayPal"
-              className="paypal-donate-image"
-            />
-          </button>
-=======
+        {/* PayPal Donation Button */}
+        <button className="paypal-donate-button" onClick={handleDonate}>
+          <img
+            src="src/assets/paypal donate.jpg"
+            alt="Donate with PayPal"
+            className="paypal-donate-image"
+          />
+        </button>
+
+        {/* PayPal Button for payments */}
         <div className="paypal-button-wrapper">
           <PayPalButtons
             style={{ layout: "vertical" }}
@@ -170,7 +165,6 @@ const DonationPage = () => {
               alert("An error occurred during payment.");
             }}
           />
->>>>>>> b61c3ad248fc068962b59df12d84c4842fdac8cd
         </div>
       </div>
     </section>
