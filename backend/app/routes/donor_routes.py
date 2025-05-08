@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, flash, redirect, url_for, render_template
+from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from app import db
 from app.models import Donor, Donation, Charity
@@ -9,73 +9,108 @@ logger = logging.getLogger(__name__)
 
 
 @donor_bp.route('<int:donor_id>/charities', methods=['GET'])
-def get_charities():
-    charities = Charity.query.all()
+@login_required
+def get_charities_donated_to(donor_id):
+    donor = Donor.query.get_or_404(donor_id)
+    charities = {donation.charity for donation in donor.donations}
+
     return jsonify([
         {
-            'id': c.id,
-            'name': c.name,
-            'description': c.description,
-            'story': c.beneficiary_story
-        } for c in charities
+            'id': charity.id,
+            'name': charity.full_name,
+            'description': charity.description,
+            'story': charity.beneficiary_story
+        } for charity in charities
     ]), 200
 
-# @donor_bp.route('/register', methods=['GET', 'POST'])
-# def register_donor():
-#     if current_user.is_authenticated:
-#         flash('You are already logged in.', 'info')
-#         return redirect(url_for('main.home'))
 
-#     if request.method == 'POST':
-#         username = request.form.get('username')
-#         email = request.form.get('email')
-#         password = request.form.get('password')
-#         # Add validation and password hashing here
-#         # Create donor user
-#         donor = Donor(username=username, email=email)
-#         # Set password hashed
-#         donor.set_password(password)
-#         db.session.add(donor)
-#         db.session.commit()
-#         flash('Donor registered successfully. Please log in.', 'success')
-#         logger.info(f"New donor registered: {email}")
-#         return redirect(url_for('auth.login'))
-
-#     return render_template('donor_register.html')
-
-@donor_bp.route('/donate', methods=['POST'])
+@donor_bp.route('/<int:donor_id>/donate/<int:charity_id>', methods=['POST'])
 @login_required
-def donate():
+def donate_to_charity(donor_id, charity_id):
     data = request.get_json()
-    amount = data.get('amount')
-    anonymous = data.get('anonymous', False)
+    
+    try:
+        amount = float(data.get('amount', 0))
+        anonymous = bool(data.get('anonymous', False))
+        repeat_donation = bool(data.get('repeat_donation', False))
+        reminder_set = bool(data.get('reminder_set', False))
+        frequency = data.get('frequency', 'one-time')
 
-    if anonymous:
-        donor_id = None
-    else:
-        donor_id = current_user.id
+        if amount <= 0:
+            return jsonify({'error': 'Invalid donation amount'}), 400
 
-    donation = Donation(amount=amount, donor_id=donor_id)
-    db.session.add(donation)
-    db.session.commit()
-    logger.info(f"Donation made by {'anonymous' if anonymous else current_user.email}: {amount}")
-    return jsonify({'message': 'Donation successful'}), 201
+        donor = Donor.query.get(donor_id)
+        charity = Charity.query.get(charity_id)
+
+        if not donor or not charity:
+            return jsonify({'error': 'Invalid donor or charity ID'}), 404
+
+        donation = Donation(
+            donor_id=donor_id,
+            charity_id=charity_id,
+            amount=amount,
+            anonymous=anonymous,
+            repeat_donation=repeat_donation,
+            reminder_set=reminder_set,
+            frequency=frequency
+        )
+
+        db.session.add(donation)
+        db.session.commit()
+
+        logger.info(f"Donation of {amount} to {charity.full_name} by {'anonymous' if anonymous else donor.full_name}")
+        return jsonify({'message': 'Donation successful', 'donation': donation.to_dict()}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@donor_bp.route('/public/donate/<int:charity_id>', methods=['POST'])
+def public_donate(charity_id):
+    data = request.get_json()
+
+    try:
+        amount = float(data.get('amount', 0))
+
+        if amount <= 0:
+            return jsonify({'error': 'Invalid donation amount'}), 400
+
+        charity = Charity.query.get(charity_id)
+        if not charity:
+            return jsonify({'error': 'Charity not found'}), 404
+
+        donation = Donation(
+            donor_id=None,  # No donor linked
+            charity_id=charity_id,
+            amount=amount,
+            anonymous=False,
+            repeat_donation=False,
+            reminder_set=False,
+            frequency='one-time'
+        )
+
+        db.session.add(donation)
+        db.session.commit()
+
+        return jsonify({'message': 'Donation successful', 'donation': donation.to_dict()}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @donor_bp.route('/<int:donor_id>/donations', methods=['GET'])
-def get_donor_donations(donor_id):
-    donor = Donor.query.get(donor_id)
+@login_required
+def get_donation_history(donor_id):
+    donor = Donor.query.get_or_404(donor_id)
+    donations = donor.donations
     if not donor:
         return jsonify({'error': 'Donor not found'}), 404
 
-    donations = [
+    return jsonify([
         {
             'amount': d.amount,
             'date': d.date.isoformat(),
-            'charity': d.charity.full_name
-        }
-        for d in donor.donations
-    ]
-    return jsonify({
-        'donor': donor.full_name,
-        'donations': donations
-    })
+            'charity': d.charity.full_name if d.charity else 'Unknown Charity',
+            'anonymous': d.anonymous,
+            'frequency': d.frequency
+        } for d in donations
+    ]), 200
