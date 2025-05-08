@@ -1,63 +1,109 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import './DonorDashboard.css'; 
+import { useDispatch, useSelector } from 'react-redux';
+import "../../styles/DonorDashboard.css";
+//import { clearUser } from '../store/authSlice';
+//import { apiFetch } from '../utils/api';
 
-const DashboardPage = () => {
-  return (
-    <section>
-      <h1>Donor Dashboard</h1>
-      <p>Welcome to your donor dashboard.</p>
-    </section>
-  );
-};
-
-
-const charities = [
-  {id: 1, name:'Woman Kind Kenya', image: '/images/woman-kind.jpg'},
-  { id: 2, name: 'Power of Pads', image: '/images/power-of-pads.jpg' },
-  { id: 3, name: 'Joyful Women', image: '/images/joyful-women.jpg' },
-  { id: 4, name: 'WeeTracker', image: '/images/weetracker.jpg' }
-];
 
 const DonorDashboard = () => {
+  const [charities, setCharities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+
+      // Fetch Charities for donor
+  useEffect(() => {
+    apiFetch('/api/donor/charities')
+      .then((data) => {
+        setCharities(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError('Failed to load charities. Please try again.');
+        setLoading(false);
+      });
+  }, []);
+
+  const handleDonateClick = (charityId) => {
+    navigate(`/donate/${charityId}`);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await apiFetch('/api/donor/logout', { method: 'POST' });
+      dispatch(clearUser());
+      navigate('/login');
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
 
   return (
-    <div className="dashboard-container">
-      <aside className="sidebar">
-        <button onClick={() => navigate('/payment')}>Donations & Payments</button>
-        <button onClick={() => navigate('/donations')}>Donations History</button>
-        <button onClick={() => navigate('/stories')}>Beneficiary Stories</button>
-        <button onClick={() => navigate('/settings')}>Settings</button>
-      </aside>
-
-      <main className = "dashboard-main">
-        <h2> Donor's Dashboard </h2>
-        <div className="charity-grid">
-          {charities.map(charity => (
-            <div key={charity.id} className="charity-card">
-              <img src={charity.image} alt={charity.name} />
-              <p>{charity.name} </p>
-              <button className="donate-btn"> Donate </button>
-          </div>    
-
-          ))}
-        </div>
-      </main>
-      {/* <footer className="footer">
-        <div>
-        <p><i className="fas fa-envelope"></i> tuinuewasichana@gmail.co.ke</p>
-        <p><i className="fas fa-phone"></i> +254712345678</p>
-        </div>
-        <div className="Socials">
-        <p><i className="fas fa-facebooks"></i> Tuinue Wasichana</p>
-        <p><i className="fas fa-twitter"></i> Tuinue Wasichana</p>
-        </div>
-      </footer> */}
+    <div>
+      <header>
+        <h1>Tuinue Wasichana</h1>
+        <button onClick={handleLogout} aria-label="Logout">
+          Logout
+        </button>
+      </header>
+      <div>
+        <aside>
+          <h2>Welcome, {user?.full_name}</h2>
+          <nav>
+            <button onClick={() => navigate('/donor-dashboard')} aria-label="Home">
+              Home
+            </button>
+            <button onClick={() => navigate('/donation-history')} aria-label="Donation History">
+              Donation History
+            </button>
+            <button onClick={() => navigate('/beneficiary-stories')} aria-label="Beneficiary Stories">
+              Beneficiary Stories
+            </button>
+            <button onClick={() => navigate('/payments')} aria-label="Donations & Payments">
+              Donations & Payments
+            </button>
+            <button onClick={() => navigate('/settings')} aria-label="Settings">
+              Settings
+            </button>
+          </nav>
+        </aside>
+        <main>
+          <h2>Choose a Charity to Support</h2>
+          {loading ? (
+            <p>Loading charities...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : charities.length === 0 ? (
+            <p>No charities available.</p>
+          ) : (
+            <div>
+              {charities.map((charity) => (
+                <div key={charity.id}>
+                  <img
+                    src={charity.image_url || 'https://via.placeholder.com/150'}
+                    alt={`Logo of ${charity.name}`}
+                  />
+                  <h3>{charity.name}</h3>
+                  <p>{charity.description}</p>
+                  <button
+                    onClick={() => handleDonateClick(charity.id)}
+                    aria-label={`Donate to ${charity.name}`}
+                  >
+                    Donate Now
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </main>
+      </div>      
     </div>
   );
 };
-     
 
 export default DonorDashboard;
 
