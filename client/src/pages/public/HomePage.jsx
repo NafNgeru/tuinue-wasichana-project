@@ -287,12 +287,14 @@ const HomePage = () => {
               >
                 Know About Us
               </button>
+              {/*
               <button
                 onClick={handleVolunteerClick}
                 className="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
               >
                 View Charities
               </button>
+              */}
             </div>
           </div>
         </div>
