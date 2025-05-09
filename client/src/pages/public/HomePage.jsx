@@ -7,10 +7,6 @@ import ImpactIcon2 from "../../assets/impact2.svg";
 import ImpactIcon3 from "../../assets/impact3.svg";
 import EmpowermentImage from "../../assets/empowerment.jpg";
 
-<div class="bg-blue-500 text-white p-4 rounded-lg text-center">
-  Tailwind CSS is working!
-</div>;
-
 const HomePage = () => {
   const navigate = useNavigate();
   const [heartbeatSpeed, setHeartbeatSpeed] = useState("slow");
@@ -18,8 +14,7 @@ const HomePage = () => {
 
   const handleLoginClick = () => navigate("/login");
   const handleDonateClick = () => navigate("/donation");
-  const handleAboutClick = () => navigate("/about");
-  const handleProgramClick = () => navigate("/programs");
+  const handleRegisterClick = () => navigate("/register");
   const handleVolunteerClick = () => navigate("/Charities");
 
   useEffect(() => {
@@ -37,37 +32,35 @@ const HomePage = () => {
   }, []);
 
   return (
-    <main className="font-sans bg-gray-50 text-gray-900">
+    <main className="font-sans bg-light-blue-100 text-gray-900">
       {/* HERO SECTION */}
-      <section className="relative text-center py-16 bg-blue-50">
-        <div className="rounded-xl overflow-hidden shadow-xl border-4 border-white w-full md:w-5/6 lg:w-4/5 mx-auto">
-          <img
-            src={HeroImage}
-            alt="Vibrant banner showcasing the spirit of empowerment"
-            className="w-full h-[800px] object-cover brightness-75 rounded-xl"
-          />
-        </div>
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center px-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+      <section className="relative h-[91vh] md:h-[90vh] overflow-hidden">
+        <img
+          src={HeroImage}
+          alt="Empowering girls"
+          className="absolute inset-0 w-full h-full object-cover object-center brightness-60"
+        />
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-white text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
             Igniting Dreams, Forging Futures for Girls
           </h1>
-          <p className="text-lg md:text-xl text-white max-w-2xl mb-6">
+          <p className="text-lg md:text-xl max-w-2xl mb-6 drop-shadow-md">
             Embark on a journey with us to champion dignity, secure health, and
             unlock boundless opportunities for girls across Sub-Saharan Africa.
           </p>
-          <div className="flex gap-3 md:gap-4 flex-wrap justify-center">
+          <div className="flex gap-4 flex-wrap justify-center">
             <button
               ref={donateButtonRef}
               onClick={handleDonateClick}
-              className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
+              className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300 transition-all"
             >
               <HeartIcon speed={heartbeatSpeed} /> Fuel the Change Now
             </button>
             <button
-              onClick={handleAboutClick}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-5 py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+              onClick={handleRegisterClick}
+              className="bg-white hover:bg-gray-200 text-gray-900 px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all"
             >
-              Discover Our Impact
+              Register With Us
             </button>
           </div>
         </div>
@@ -148,37 +141,35 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* CALL TO ACTION SECTION */}
-      <section className="relative py-16 bg-blue-100">
-        <div className="rounded-xl overflow-hidden shadow-xl border-4 border-white w-full md:w-5/6 lg:w-4/5 mx-auto">
-          <img
-            src={EmpowermentImage}
-            alt="Inspiring scene of empowered girls"
-            className="w-full h-auto object-cover brightness-50 rounded-xl"
-          />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center text-center px-6">
-          <div className="max-w-xl">
-            <h2 className="text-3xl font-bold text-white mb-4">
+      {/* EMPOWERMENT SECTION */}
+      <section className="relative h-[80vh] md:h-[80vh] overflow-hidden">
+        <img
+          src={EmpowermentImage}
+          alt="Empowered girls"
+          className="absolute inset-0 w-full h-full object-cover object-center brightness-50"
+        />
+        <div className="relative z-10 flex items-center justify-center h-full px-6 text-white text-center">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-lg">
               Ready to Be a Force for Change?
             </h2>
-            <p className="text-lg text-white mb-6">
+            <p className="text-lg md:text-xl mb-6 drop-shadow-md">
               Your invaluable contribution can ignite a spark in a girl's life,
               empowering her to stay in school and sculpt a future brimming with
               promise.
             </p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-3 justify-center flex-wrap">
               <button
-                onClick={handleDonateClick}
-                className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
+                onClick={() => navigate("/about")}
+                className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300"
               >
-                Donate Now and Transform Lives
+                Know About Us
               </button>
               <button
                 onClick={handleVolunteerClick}
-                className="bg-white hover:bg-gray-100 text-blue-500 px-6 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                className="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
               >
-                Join Our Dedicated Volunteers
+                View Charities
               </button>
             </div>
           </div>
@@ -186,55 +177,95 @@ const HomePage = () => {
       </section>
 
       {/* TESTIMONIALS SECTION */}
-      <section className="py-12 bg-gray-50 text-center">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+      <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-100 text-center">
+        <h2 className="text-3xl font-semibold text-gray-800 mb-10">
           Voices of Hope and Transformation
         </h2>
-        <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto px-4">
+        <div className="max-w-3xl mx-auto px-4 space-y-10">
           {[
             {
               quote:
-                "“Tuinue Wasichana's unwavering support has been a lifeline for my daughter. She's blossomed into a confident and thriving student.”",
-              name: "Amina J., Grateful Parent",
+                "Tuinue Wasichana's unwavering support has been a lifeline for my daughter. She's blossomed into a confident and thriving student.",
+              name: "— Amina J., Grateful Parent",
             },
             {
               quote:
-                "“I wholeheartedly believe in their powerful mission. Every donation is a seed of change that cultivates tangible impact in the lives of these bright young girls.”",
-              name: "David L., Passionate Supporter",
+                "I wholeheartedly believe in their powerful mission. Every donation is a seed of change that cultivates tangible impact in the lives of these bright young girls.",
+              name: "— David L., Passionate Supporter",
             },
             {
               quote:
-                "“Receiving sanitary pads consistently has been a game-changer for my education. My deepest gratitude!”",
-              name: "Fatuma K., Empowered Student",
+                "Receiving sanitary pads consistently has been a game-changer for my education. My deepest gratitude!",
+              name: "— Fatuma K., Empowered Student",
             },
           ].map(({ quote, name }, i) => (
-            <div
+            <blockquote
               key={i}
-              className="bg-white rounded-lg shadow-md p-6 w-80 text-left hover:shadow-xl transition duration-300"
+              className="bg-white shadow-lg rounded-2xl p-8 relative transition-transform duration-300 hover:scale-[1.02]"
             >
-              <p className="italic text-gray-700 mb-3">{quote}</p>
-              <p className="font-semibold text-blue-500">- {name}</p>
-            </div>
+              <p className="text-xl italic text-gray-700 mb-4 leading-relaxed">
+                “{quote}”
+              </p>
+              <footer className="text-sm font-medium text-blue-500">
+                {name}
+              </footer>
+            </blockquote>
           ))}
         </div>
       </section>
 
-      {/* PROGRAMS SECTION */}
+      {/* CONTACT SECTION */}
       <section className="py-12 bg-white text-center">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Explore Our Life-Changing Initiatives
+          Connect With Us
         </h2>
-        <p className="text-gray-700 mb-6">
-          Delve into the diverse and impactful ways we are nurturing the
-          potential of girls and discover how you can become an integral part of
-          this vital movement.
+        <p className="text-gray-700 mb-8">
+          We're here to answer your questions and support your journey in making
+          a difference.
         </p>
-        <button
-          onClick={handleProgramClick}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-        >
-          Uncover Our Programs
-        </button>
+        <div className="flex flex-wrap justify-center gap-6 px-4 max-w-4xl mx-auto">
+          {[
+            {
+              title: "General Inquiries",
+              contact: "info@tuinuewasichanacci.org",
+              phone: "+254 700 123456",
+            },
+            {
+              title: "Volunteer Opportunities",
+              contact: "volunteer@tuinuewasichanacci.org",
+              phone: "+254 701 654321",
+            },
+            {
+              title: "Partnerships & Support",
+              contact: "partners@tuinuewasichanacci.org",
+              phone: "+254 702 987654",
+            },
+          ].map(({ title, contact, phone }, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 rounded-lg shadow-md p-6 w-80 text-left hover:shadow-xl transition duration-300"
+            >
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                {title}
+              </h3>
+              <p className="text-gray-700 mb-1">
+                <strong>Email:</strong>{" "}
+                <a
+                  href={`mailto:${contact}`}
+                  className="text-blue-600 underline"
+                >
+                  {contact}
+                </a>
+              </p>
+              <p className="text-gray-700">
+                <strong>Phone:</strong>{" "}
+                <a href={`tel:${phone}`} className="text-blue-600 underline">
+                  {phone}
+                </a>
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   );
@@ -254,9 +285,9 @@ const HeartIcon = ({ speed }) => (
   >
     <path
       d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-      2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
-      C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
-      22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+         2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+         C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
+         22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
     />
     <style>{`
       .heart-icon { animation-fill-mode: forwards; }
