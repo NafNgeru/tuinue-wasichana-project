@@ -14,7 +14,7 @@ export default function CharityDashboard() {
   useEffect(() => {
     const fetchDonations = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/donations");
+        const response = await fetch(`http://127.0.0.1:5000/donations/${id}`);
         if (!response.ok) throw new Error("Failed to fetch donations");
         const data = await response.json();
         setDonations(data);

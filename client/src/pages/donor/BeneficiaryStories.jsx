@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { apiFetch } from '../utils/api';
+// import { apiFetch } from '../utils/api';
 
 const BeneficiaryStories = () => {
   const [charities, setCharities] = useState([]);
@@ -14,10 +14,10 @@ const BeneficiaryStories = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const donations = await apiFetch('/api/donor/donations');
+        const donations = await fetch(`http://127.0.0.1:5000/donor/${id}/donations`);
         const charityIds = [...new Set(donations.map((d) => d.charity_id))];
         setDonatedCharityIds(charityIds);
-        const allCharities = await apiFetch('/api/donor/charities');
+        const allCharities = await fetch(`http://127.0.0.1:5000/donor/${id}/charities`);
         const filteredCharities = allCharities.filter((charity) =>
           charityIds.includes(charity.id)
         );
@@ -103,4 +103,4 @@ const BeneficiaryStories = () => {
   );
 };
 
-export default BeneficiaryStories;
+export default BeneficiaryStories; 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import "../../styles/StoryManagement.css"
-
+import { useDropzone } from 'react-dropzone';
+import "../../styles/StoryManagement.css";
 
 const StoryPage = () => {
   const { id } = useParams();
@@ -35,7 +35,9 @@ const StoryPage = () => {
           <h3 className="story-title">{story.title}</h3>
           <p className="story-date">{new Date(story.date).toLocaleDateString()}</p>
           <p className="story-content">{story.content}</p>
-          {/* <p className="story-charity"><strong>Charity:</strong> {story.charity_name}</p> */}
+          {story.image_url && (
+            <img src={story.image_url} alt="Story visual" className="story-image" />
+          )}
         </div>
       ))}
     </div>
@@ -45,47 +47,92 @@ const StoryPage = () => {
 const StoryManagement = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [imageURL, setImageURL] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const { id } = useParams();
 
-  const handleSubmit = (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleImageURL = (e) => {
+    setImageURL(e.target.value);
+    setPreview(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    fetch(`http://127.0.0.1:5000/charity/${id}/stories`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert('Story posted successfully!');
-        setTitle('');
-        setContent('');
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    } else if (imageURL) {
+      formData.append("image_url", imageURL);
+    }
+
+    try {
+      const res = await fetch(`http://127.0.0.1:5000/charity/${id}/stories`, {
+        method: 'POST',
+        body: formData,
       });
+
+      if (!res.ok) throw new Error('Failed to post story');
+      alert('Story posted successfully!');
+      setTitle('');
+      setContent('');
+      setImageFile(null);
+      setImageURL('');
+      setPreview(null);
+    } catch (err) {
+      alert('Error posting story: ' + err.message);
+    }
   };
 
   return (
     <div>
       <StoryPage />
-    <div className="charity-details-container">
-      <h2>Post a New Story</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Story title"
-          required
-        />
-        <textarea
-          name="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Story content"
-          required
-        />
-        <button type="submit">Post Story</button>
-      </form>
-    </div>
+      <div className="charity-details-container">
+        <h2>Post a New Story</h2>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Story title"
+            required
+          />
+          <textarea
+            name="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Story content"
+            required
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          <input
+            type="text"
+            placeholder="Or enter image URL"
+            value={imageURL}
+            onChange={handleImageURL}
+          />
+          {preview && (
+            <img src={preview} alt="Preview" className="story-image" />
+          )}
+          <button type="submit">Post Story</button>
+        </form>
+      </div>
     </div>
   );
 };

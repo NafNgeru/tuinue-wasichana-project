@@ -6,6 +6,7 @@ import StoryManagement from '../pages/charity/StoryManagement';
 import CharityDetails from '../pages/charity/CharityDetails';
 import InventoryPage from '../pages/inventory/Inventory';
 
+
 const CharityRoutes = () => {
   return (
     <Routes>

@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { useParams } from "react-router-dom";
 import "../../styles/DonationPage.css";
 
 const DonationPage = () => {
   const [amount, setAmount] = useState("");
   const [selectedQuickAmount, setSelectedQuickAmount] = useState(null);
   const [anonymous, setAnonymous] = useState(false);
-  const [donationType, setDonationType] = useState("one-time"); 
+  const [donationType, setDonationType] = useState("one-time");
+
+  const { donorId, charityId } = useParams(); 
 
   const quickAmounts = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
@@ -20,6 +23,38 @@ const DonationPage = () => {
       alert("Monthly donation reminder has been set!");
     } else {
       alert("Reminder is only available for monthly donations.");
+    }
+  };
+
+  const isMonthly = donationType === "monthly";
+
+  const handleBackendDonation = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/donors/${donorId}/donate/${charityId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          charity_id: parseInt(charityId), 
+          amount: parseFloat(amount),
+          frequency: isMonthly ? "monthly" : "one-time",
+          anonymous: anonymous,
+          repeat_donation: isMonthly,
+          reminder_set: isMonthly,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Donation failed.");
+      }
+
+      console.log("Donation recorded:", result);
+    } catch (err) {
+      console.error("Backend donation error:", err);
+      alert("Donation succeeded with PayPal, but saving to backend failed.");
     }
   };
 
@@ -117,10 +152,11 @@ const DonationPage = () => {
               });
             }}
             onApprove={(data, actions) => {
-              return actions.order.capture().then((details) => {
+              return actions.order.capture().then(async (details) => {
                 alert(
                   `Donation successful! Thank you, ${details.payer.name.given_name}.`
                 );
+                await handleBackendDonation(); 
               });
             }}
             onError={(err) => {

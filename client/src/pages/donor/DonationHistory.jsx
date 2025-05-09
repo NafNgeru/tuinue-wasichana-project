@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { apiFetch } from '../utils/api';
+import { useParams } from 'react-router-dom';
+// import { apiFetch } from '../utils/api';
 
 const DonationHistory = () => {
+  const id = useParams();
   const [donations, setDonations] = useState([]);
   const [charities, setCharities] = useState({});
   const [loading, setLoading] = useState(true);
@@ -12,9 +14,9 @@ const DonationHistory = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const donationData = await apiFetch('/api/donor/donations');
+        const donationData = await fetch(`http://127.0.0.1:5000/donor/${id}/donations`);
         setDonations(donationData);
-        const charityData = await apiFetch('/api/donor/charities');
+        const charityData = await fetch(`http://127.0.0.1:5000/donor/${id}/charities`);
         const charityMap = charityData.reduce((map, charity) => {
           map[charity.id] = charity.name;
           return map;
@@ -75,4 +77,3 @@ const DonationHistory = () => {
 };
 
 export default DonationHistory;
-
