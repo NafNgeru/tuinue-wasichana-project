@@ -6,15 +6,18 @@ import ImpactIcon1 from "../../assets/impact1.svg";
 import ImpactIcon2 from "../../assets/impact2.svg";
 import ImpactIcon3 from "../../assets/impact3.svg";
 import EmpowermentImage from "../../assets/empowerment.jpg";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [heartbeatSpeed, setHeartbeatSpeed] = useState("slow");
   const donateButtonRef = useRef(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLoginClick = () => navigate("/login");
   const handleDonateClick = () => navigate("/donation");
-  const handleRegisterClick = () => navigate("/register");
   const handleVolunteerClick = () => navigate("/Charities");
 
   useEffect(() => {
@@ -27,8 +30,19 @@ const HomePage = () => {
       setHeartbeatSpeed(distance < 100 ? "fast" : "slow");
     };
 
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -51,17 +65,125 @@ const HomePage = () => {
           <div className="flex gap-4 flex-wrap justify-center">
             <button
               ref={donateButtonRef}
-              onClick={handleDonateClick}
+              onClick={() => navigate("/Charities")}
               className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300 transition-all"
             >
               <HeartIcon speed={heartbeatSpeed} /> Fuel the Change Now
             </button>
-            <button
-              onClick={handleRegisterClick}
-              className="bg-white hover:bg-gray-200 text-gray-900 px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all"
-            >
-              Register With Us
-            </button>
+
+            {/* Register With Us Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="bg-white hover:bg-gray-200 text-gray-900 px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all flex items-center"
+              >
+                Commence Registration
+              </button>
+              {showDropdown && (
+                <div
+                  style={{
+                    position: "absolute",
+                    marginTop: "0.5rem",
+                    backgroundColor: "white",
+                    border: "1px solid #e0e0e0",
+                    borderRadius: "0.375rem",
+                    boxShadow:
+                      "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                    right: "0",
+                    zIndex: "20",
+                    width: "16rem",
+                  }}
+                >
+                  <button
+                    onClick={() => navigate("/register-individual-donor")}
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      textAlign: "left",
+                      padding: "0.75rem 1.25rem",
+                      color: "#4a5568",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f7fafc")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "transparent")
+                    }
+                  >
+                    Register Individual Donor
+                  </button>
+                  <button
+                    onClick={() => navigate("/register-organization-donor")}
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      textAlign: "left",
+                      padding: "0.75rem 1.25rem",
+                      color: "#4a5568",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      borderTop: "1px solid #e0e0e0",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f7fafc")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "transparent")
+                    }
+                  >
+                    Register Organization Donor
+                  </button>
+                  <button
+                    onClick={() => navigate("/register-individual-charity")}
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      textAlign: "left",
+                      padding: "0.75rem 1.25rem",
+                      color: "#4a5568",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      borderTop: "1px solid #e0e0e0",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f7fafc")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "transparent")
+                    }
+                  >
+                    Register Individual Charity
+                  </button>
+                  <button
+                    onClick={() => navigate("/register-organization-charity")}
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      textAlign: "left",
+                      padding: "0.75rem 1.25rem",
+                      color: "#4a5568",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      borderTop: "1px solid #e0e0e0",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f7fafc")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "transparent")
+                    }
+                  >
+                    Register Organization Charity
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -285,7 +407,7 @@ const HeartIcon = ({ speed }) => (
   >
     <path
       d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-         2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+         2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.05
          C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42
          22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
     />
