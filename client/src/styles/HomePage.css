@@ -7,17 +7,38 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fade background layers */
+.background-layer {
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transition: opacity 1s ease-in-out;
+  z-index: -2;
 }
 
 h1 {
   font-size: 1.875rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: white;
+  position: relative;
+  z-index: 1;
 }
 
 p {
   margin-bottom: 1.5rem;
   max-width: 40rem;
+  color: white;
+  position: relative;
+  z-index: 1;
 }
 
 button {
@@ -27,8 +48,33 @@ button {
   padding: 0.75rem 1.5rem;
   cursor: pointer;
   border: none;
+  transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 button:hover {
   background-color: #1d4ed8;
+}
+
+/* Heartbeat animations */
+.heart-icon {
+  animation-fill-mode: forwards;
+}
+
+.heartbeat-slow {
+  animation: heartbeat 2s infinite;
+}
+
+.heartbeat-fast {
+  animation: heartbeat 0.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
 }

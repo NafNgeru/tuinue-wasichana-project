@@ -69,37 +69,94 @@ const CharityApproval = () => {
       {pendingCharities.length === 0 ? (
         <p>No pending approvals.</p>
       ) : (
-        <ul>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {pendingCharities.map((charity) => (
-          <li key={charity.id} style={{ marginBottom: '1rem' }}>
-            <strong>{charity.full_name}</strong> - {charity.email}
-            <div>
-              <button onClick={() => handleApprove(charity.id)} style={{ marginRight: '0.5rem' }}>
-                Approve
-              </button>
-              <button onClick={() => handleDecline(charity.id)} style={{ marginRight: '0.5rem' }}>
-                Decline
-              </button>
-              <button onClick={() => handleDelete(charity.id)} style={{ marginRight: '0.5rem' }}>
+            <div
+              key={charity.id}
+              style={{
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '1rem',
+                width: '300px',
+                position: 'relative',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+              }}
+            >
+              <button
+                onClick={() => handleDelete(charity.id)}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  left: '8px',
+                  backgroundColor: '#e53e3e',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '0.25rem 0.5rem',
+                  cursor: 'pointer',
+                }}
+              >
                 Delete
               </button>
+              <button
+                onClick={() => handleApprove(charity.id)}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  backgroundColor: '#38a169',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '0.25rem 0.5rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Approve
+              </button>
+              <h3>{charity.full_name}</h3>
+              <p>{charity.email}</p>
+              <button
+                onClick={() => handleDecline(charity.id)}
+                style={{
+                  marginTop: '1rem',
+                  backgroundColor: '#dd6b20',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '0.5rem 1rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Decline
+              </button>
             </div>
-          </li>
           ))}
-        </ul>
+        </div>
       )}
 
       <h2>All Charities</h2>
       {charities.length === 0 ? (
         <p>No charities registered.</p>
       ) : (
-        <ul>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {charities.map((charity) => (
-            <li key={charity.id}>
-              <strong>{charity.full_name}</strong> - {charity.email}
-            </li>
+            <div
+              key={charity.id}
+              style={{
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '1rem',
+                width: '300px',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                position: 'relative',
+              }}
+            >
+              <h3>{charity.full_name}</h3>
+              <p>{charity.email}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </section>
   );

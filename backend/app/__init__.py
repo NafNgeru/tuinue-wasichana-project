@@ -7,11 +7,13 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_mail import Mail
 from .db import db
 from .extensions import bcrypt, login_manager
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
+mail = Mail()
 
 from .routes.story_routes import story_bp
 from .routes.charity_routes import charity_bp
@@ -35,11 +37,8 @@ def create_app():
 
     print("Using DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])
 
-
     app.config['ENV']   = 'development'
     app.config['DEBUG'] = True
-    # app.config["JWT_TOKEN_LOCATION"] = ["headers"]
-    # app.config["JWT_SECRET_KEY"] = "tuinue-secret-key"
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -49,6 +48,8 @@ def create_app():
     
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
+
+    mail.init_app(app)
 
     @login_manager.user_loader
     def load_user(user_id):

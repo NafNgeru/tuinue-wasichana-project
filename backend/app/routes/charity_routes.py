@@ -63,6 +63,9 @@ def get_pending_charities():
     ]
     return jsonify(result), 200
 
+from flask_mail import Message
+from app import mail
+
 @charity_bp.route('/<int:id>/approve', methods=['POST'])
 def approve_charity(id):
     charity = Charity.query.get(id)
@@ -70,6 +73,18 @@ def approve_charity(id):
         return jsonify({"error": "Charity not found"}), 404
     charity.application_status = 'approved'
     db.session.commit()
+
+    # Send approval email
+    try:
+        msg = Message(
+            subject="Charity Registration Approved",
+            recipients=[charity.email],
+            body=f"Dear {charity.full_name},\n\nYour charity registration has been approved. You can now access all features.\n\nBest regards,\nTuinue Wasichana Team"
+        )
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error sending approval email: {e}")
+
     return jsonify({"message": "Charity approved successfully"}), 200
 
 @charity_bp.route('/<int:id>/decline', methods=['POST'])
@@ -79,6 +94,18 @@ def decline_charity(id):
         return jsonify({"error": "Charity not found"}), 404
     charity.application_status = 'declined'
     db.session.commit()
+
+    # Send declination email
+    try:
+        msg = Message(
+            subject="Charity Registration Declined",
+            recipients=[charity.email],
+            body=f"Dear {charity.full_name},\n\nWe regret to inform you that your charity registration has been declined. For more information, please contact support.\n\nBest regards,\nTuinue Wasichana Team"
+        )
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error sending declination email: {e}")
+
     return jsonify({"message": "Charity declined successfully"}), 200
 
 @charity_bp.route('/<int:id>', methods=['GET'])

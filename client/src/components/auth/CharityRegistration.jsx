@@ -83,10 +83,10 @@ const CharityRegistration = () => {
   };
 
   return (
-    <section className="max-w-md mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Charity Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" encType="multipart/form-data">
-        <label className="flex flex-col">
+    <section className="max-w-md mx-auto p-6 bg-white rounded shadow-md">
+      <h2 className="text-3xl font-semibold mb-6 text-center">Charity Registration - {formData.userType.charAt(0).toUpperCase() + formData.userType.slice(1)}</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5" encType="multipart/form-data">
+        <label className="flex flex-col text-gray-700 font-medium">
           Charity Name:
           <input
             type="text"
@@ -94,10 +94,11 @@ const CharityRegistration = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="border border-gray-300 rounded px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter charity name"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-700 font-medium">
           Email:
           <input
             type="email"
@@ -105,10 +106,11 @@ const CharityRegistration = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="border border-gray-300 rounded px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter email address"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-700 font-medium">
           Username:
           <input
             type="text"
@@ -116,10 +118,11 @@ const CharityRegistration = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            className={`border rounded px-3 py-2 mt-1 ${usernameAvailable ? 'border-gray-300' : 'border-red-600'}`}
+            className={`border rounded px-4 py-2 mt-2 focus:outline-none focus:ring-2 ${usernameAvailable ? 'border-gray-300 focus:ring-blue-500' : 'border-red-600 focus:ring-red-500'}`}
+            placeholder="Choose a username"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-700 font-medium">
           Password:
           <input
             type="password"
@@ -127,10 +130,11 @@ const CharityRegistration = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="border border-gray-300 rounded px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Create a password"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-700 font-medium">
           Phone Number:
           <input
             type="tel"
@@ -138,33 +142,34 @@ const CharityRegistration = () => {
             value={formData.phone}
             onChange={handleChange}
             required
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="border border-gray-300 rounded px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter phone number"
           />
         </label>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-gray-700 font-medium">
           Logo:
           <input
             type="file"
             name="logo"
             accept="image/*"
             onChange={handleFileChange}
-            className="border border-gray-300 rounded px-3 py-2 mt-1"
+            className="border border-gray-300 rounded px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </label>
         <button
           type="submit"
-          className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
+          className="bg-blue-600 text-white rounded px-6 py-3 hover:bg-blue-700 transition duration-300"
         >
           Register
         </button>
       </form>
       <button
         onClick={() => navigate('/login')}
-        className="mt-4 bg-gray-600 text-white rounded px-4 py-2 hover:bg-gray-700"
+        className="mt-6 bg-gray-600 text-white rounded px-6 py-3 hover:bg-gray-700 transition duration-300 w-full"
       >
         Login
       </button>
-      {message && <p className={`mt-4 ${usernameAvailable ? 'text-green-600' : 'text-red-600'}`}>{message}</p>}
+      {message && <p className={`mt-5 text-center font-semibold ${usernameAvailable ? 'text-green-600' : 'text-red-600'}`}>{message}</p>}
     </section>
   );
 };
