@@ -56,7 +56,7 @@ const HomePage = () => {
           alt="Empowering girls"
           className="absolute inset-0 w-full h-full object-cover object-center brightness-60"
         />
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-white text-center">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-blue text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
             Igniting Dreams, Forging Futures for Girls
           </h1>

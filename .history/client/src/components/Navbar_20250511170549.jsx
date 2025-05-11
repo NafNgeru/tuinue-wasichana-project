@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../../src/assets/logo.svg";
-import HerFutureLogo from "../../src/assets/herfuture.png";
+import HerFutureLogo from "../../src/assets/herfuture.png"; // Corrected import path
 
 const Navbar = () => {
   return (
@@ -10,19 +10,19 @@ const Navbar = () => {
     >
       <div
         className="mx-auto flex items-center justify-between px-4"
-        style={{ height: "100%", marginLeft: "4rem" }}
+        style={{ height: "100%", marginLeft: "0" }}
       >
         <div className="flex items-center">
           <img
             src={HerFutureLogo}
             alt="Her Future Logo"
             className="mr-2"
-            style={{ height: "100px", width: "100px", marginRight: "2rem" }}
+            style={{ height: "100px", width: "100px", marginRight: "1rem" }}
           />
           <img
             src={Logo}
             alt="Tuinue Wasichana Logo"
-            style={{ height: "100px", width: "100px", marginRight: "2rem" }}
+            style={{ height: "100px", width: "100px", marginRight: "1rem" }}
           />
           <div className="flex flex-col items-center -mt-4">
             <h1
@@ -52,7 +52,7 @@ const Navbar = () => {
             height: "100%",
             display: "flex",
             alignItems: "center",
-            marginRight: "7rem",
+            marginRight: "2rem",
           }}
         >
           <a
@@ -62,7 +62,7 @@ const Navbar = () => {
               marginRight: "1.5rem",
               fontSize: "1.2rem",
               color: "black",
-              fontFamily: 'Roboto, "Helvetica Neue", sans-serif',
+              fontFamily: 'Roboto, "Helvetica Neue", sans-serif', // Applied Roboto font
             }}
           >
             Home
@@ -74,7 +74,7 @@ const Navbar = () => {
               marginRight: "1.5rem",
               fontSize: "1.2rem",
               color: "black",
-              fontFamily: 'Roboto, "Helvetica Neue", sans-serif',
+              fontFamily: 'Roboto, "Helvetica Neue", sans-serif', // Applied Roboto font
             }}
           >
             About
@@ -86,7 +86,7 @@ const Navbar = () => {
               fontSize: "1.2rem",
               color: "black",
               marginRight: "1.5rem",
-              fontFamily: 'Roboto, "Helvetica Neue", sans-serif',
+              fontFamily: 'Roboto, "Helvetica Neue", sans-serif', // Applied Roboto font
             }}
           >
             Stories
@@ -97,7 +97,7 @@ const Navbar = () => {
             style={{
               fontSize: "1.2rem",
               color: "black",
-              fontFamily: 'Roboto, "Helvetica Neue", sans-serif',
+              fontFamily: 'Roboto, "Helvetica Neue", sans-serif', // Applied Roboto font
             }}
           >
             Charities

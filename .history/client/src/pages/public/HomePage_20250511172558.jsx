@@ -284,7 +284,7 @@ const HomePage = () => {
                 onClick={() => navigate("/Charities")}
                 className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300 transition-all"
               >
-                <HeartIcon speed={heartbeatSpeed} /> Fuel the Change
+                <HeartIcon speed={heartbeatSpeed} /> Fuel the Change Now
               </button>
 
               <button

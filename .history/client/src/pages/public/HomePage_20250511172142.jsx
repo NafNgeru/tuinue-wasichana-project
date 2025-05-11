@@ -18,7 +18,7 @@ const HomePage = () => {
 
   const handleLoginClick = () => navigate("/login");
   const handleDonateClick = () => navigate("/donation");
-  const handleVolunteerClick = () => navigate("/Login");
+  const handleVolunteerClick = () => navigate("/Log in");
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -67,7 +67,7 @@ const HomePage = () => {
           <div className="flex gap-4 flex-wrap justify-center">
             <button
               onClick={handleVolunteerClick}
-              className="bg-white hover:bg-gray-200 text-gray-900 px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all flex items-center"
+              className="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
               Log in
             </button>
@@ -284,7 +284,7 @@ const HomePage = () => {
                 onClick={() => navigate("/Charities")}
                 className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-md font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300 transition-all"
               >
-                <HeartIcon speed={heartbeatSpeed} /> Fuel the Change
+                <HeartIcon speed={heartbeatSpeed} /> Fuel the Change Now
               </button>
 
               <button
