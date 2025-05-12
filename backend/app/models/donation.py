@@ -26,6 +26,7 @@ class Donation(db.Model):
             'amount': self.amount,
             'date': self.date.isoformat() if self.date else None,
             'frequency': self.frequency,
+            'repeat_donation': self.repeat_donation,
             'donor_name': self.donor.full_name if self.donor and not self.anonymous else 'Anonymous'
         }
     

@@ -57,11 +57,14 @@ def create_app():
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(donor_bp, url_prefix='/donors')
-    app.register_blueprint(donation_bp, url_prefix='/donations')
+    app.register_blueprint(donation_bp)
     app.register_blueprint(charity_bp, url_prefix='/charities')
     app.register_blueprint(story_bp)
     app.register_blueprint(inventory_bp)
     app.register_blueprint(beneficiary_bp)
+
+    for rule in app.url_map.iter_rules():
+        print(rule)
 
     @app.route('/')
     def index():

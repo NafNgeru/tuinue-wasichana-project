@@ -8,8 +8,8 @@ donor_bp = Blueprint('donor', __name__)
 logger = logging.getLogger(__name__)
 
 
-@donor_bp.route('<int:donor_id>/charities', methods=['GET'])
-@login_required
+@donor_bp.route('/<int:donor_id>/charities', methods=['GET'])
+#@login_required
 def get_charities_donated_to(donor_id):
     donor = Donor.query.get_or_404(donor_id)
     charities = {donation.charity for donation in donor.donations}
@@ -97,14 +97,10 @@ def public_donate(charity_id):
         return jsonify({'error': str(e)}), 500
 
 
-@donor_bp.route('/<int:donor_id>/donations', methods=['GET'])
-@login_required
-def get_donation_history(donor_id):
+#@donor_bp.route('/<int:donor_id>/donations', methods=['GET'])
+#@login_required
+#def get_donation_history(donor_id):
     donor = Donor.query.get_or_404(donor_id)
-    donations = donor.donations
-    if not donor:
-        return jsonify({'error': 'Donor not found'}), 404
-
     return jsonify([
         {
             'amount': d.amount,
@@ -112,5 +108,5 @@ def get_donation_history(donor_id):
             'charity': d.charity.full_name if d.charity else 'Unknown Charity',
             'anonymous': d.anonymous,
             'frequency': d.frequency
-        } for d in donations
+        } for d in donor.donations
     ]), 200

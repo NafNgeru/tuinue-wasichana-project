@@ -5,6 +5,16 @@ from app import db
 donation_bp = Blueprint('donation_bp', __name__)
 
 
+
+@donation_bp.route('/donor/<int:donor_id>/donations', methods=['GET'])
+def get_donations_by_donor(donor_id):
+    donations = Donation.query.filter_by(donor_id=donor_id).all()
+    
+    if donations:
+        return jsonify([donation.to_dict() for donation in donations]), 200
+    else:
+        return jsonify([]), 200 
+
 @donation_bp.route('/', methods=['GET'])
 def get_all_donations():
     donations = Donation.query.all()

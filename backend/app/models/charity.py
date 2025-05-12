@@ -12,7 +12,7 @@ class Charity(db.Model):
     full_name = db.Column(db.String(150), nullable=False)
     contact = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
+    #password_hash = db.Column(db.String(128), nullable=False)
     description = db.Column(db.Text, nullable=True)
     website_url = db.Column(db.String, nullable=True)
     image = db.Column(db.String, nullable=True)
