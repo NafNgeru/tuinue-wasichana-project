@@ -14,7 +14,7 @@
   padding: 40px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 /* Background Slideshow (already absolute in component) */
@@ -38,8 +38,17 @@
 
 .admin-nav ul li a {
   text-decoration: none;
-  color: #007bff;
+  color: #0c0904;
   font-weight: bold;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: rgba(134, 181, 235, 0.8);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 .admin-nav ul li a:hover {
@@ -55,8 +64,8 @@
 
 /* Individual Widget Styling */
 .widget {
-  background-color: rgba(101, 245, 82, 0.85);
-  border: 1px solid #ddd;
+  background-color: rgba(112, 211, 99, 0.85);
+  border: 1px solid rgba(112, 211, 99, 0.85);
   padding: 15px;
   border-radius: 8px;
   flex: 1 1 45%;
@@ -64,14 +73,14 @@
 }
 /* General Page Styling */
 .delete-charity-page {
-  background-color: #f9fafb;
+  background-color: #6c9fd1;
   min-height: 100vh;
   padding-top: 2rem;
 }
 
 /* Headings */
 .delete-charity-page h2 {
-  color: #1f2937;
+  color: #2964b8;
   font-weight: bold;
 }
 
@@ -83,8 +92,8 @@
 
 /* Card Item Styling */
 .delete-charity-page li {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  background-color: #bde9b7;
+  border: 1px solid #839ed3;
   border-radius: 0.5rem;
   padding: 1rem;
   display: flex;

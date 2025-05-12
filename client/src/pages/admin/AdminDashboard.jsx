@@ -65,7 +65,7 @@ const AdminDashboard = () => {
             <p>{charities.length}</p>
             <button
               onClick={fetchData}
-              className="bg-white-600 text-white px-3 py-1 rounded hover:bg-blue-700 mb-2"
+              className="bg-blue-600 text-black px-3 py-1 rounded hover:bg-blue-700 mb-2"
             >
               Refresh
             </button>
