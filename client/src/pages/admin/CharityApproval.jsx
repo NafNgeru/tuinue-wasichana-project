@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
+import { Link } from "react-router-dom";
 
 const CharityApproval = () => {
   const [pendingCharities, setPendingCharities] = useState([]);
@@ -44,6 +45,9 @@ const CharityApproval = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
+      <Link to="/admin" className="mb-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Back to Dashboard
+      </Link>
       <h2 className="text-2xl font-bold mb-4">Pending Charity Applications</h2>
       {pendingCharities.length === 0 ? (
         <p>No pending charity applications.</p>
@@ -81,3 +85,4 @@ const CharityApproval = () => {
 };
 
 export default CharityApproval;
+

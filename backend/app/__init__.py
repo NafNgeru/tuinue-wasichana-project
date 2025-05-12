@@ -30,8 +30,8 @@ def create_app():
     app = Flask(__name__, static_folder='static', static_url_path='/static')
 
     # Configuration
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    from .config import Config
+    app.config.from_object(Config)
     app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
 
     print("Using DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])
