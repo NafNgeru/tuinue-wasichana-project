@@ -9,7 +9,6 @@ from app import db
 charity_bp = Blueprint('charity', __name__)
 
 @charity_bp.route('/apply', methods=['POST'])
-# @jwt_required()
 def apply_charity():
     user_id = request.json.get('user_id')
     user = User.query.get(user_id)

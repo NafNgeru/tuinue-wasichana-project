@@ -1,114 +1,129 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import "../../styles/BeneficiaryStory.css";
-// import { apiFetch } from '../utils/api';
 
 const BeneficiaryStory = () => {
   const [charities, setCharities] = useState([]);
-  const [donatedCharityIds, setDonatedCharityIds] = useState([]);
-  const [selectedCharity, setSelectedCharity] = useState(null);
+  const [selectedStory, setSelectedStory] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showFullStory, setShowFullStory] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const donor = useSelector((state) => state.auth.user);
-  const id = donor?.id;
+  const { id } = useParams();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return;
+      try {
+        const donationsRes = await fetch(`http://127.0.0.1:5000/donors/${id}/donations`);
+        const donations = await donationsRes.json();
+    
+        const charityIds = [...new Set(donations.map((d) => d.charity_id).filter(id => id !== undefined))];
+    
+        const charitiesWithStories = await Promise.all(
+          charityIds.map(async (charityId) => {
+            const charityRes = await fetch(`http://127.0.0.1:5000/charities/${charityId}`);
+            const charity = await charityRes.json();
+    
+            const storiesRes = await fetch(`http://127.0.0.1:5000/charity/${charityId}/stories`);
+            const stories = await storiesRes.json();
+    
+            return {
+              ...charity,
+              stories,
+            };
+          })
+        );
+    
+        setCharities(charitiesWithStories);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load beneficiary stories. Please try again.');
+        setLoading(false);
+      }
+    };
+    
 
-useEffect(() => {
-  const fetchData = async () => {
-    if (!id) return;
-    try {
-      const donationsRes = await fetch(`http://127.0.0.1:5000/donor/${id}/donations`);
-      const donations = await donationsRes.json();
+    fetchData();
+  }, [id]);
 
-      const charityIds = [...new Set(donations.map((d) => d.charity_id))];
-      setDonatedCharityIds(charityIds);
-
-      const charitiesRes = await fetch(`http://127.0.0.1:5000/donors/${id}/charities`);
-      const allCharities = await charitiesRes.json();
-
-      const filteredCharities = allCharities.filter((charity) =>
-        charityIds.includes(charity.id)
-      );
-
-      setCharities(filteredCharities);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to load beneficiary stories. Please try again.');
-      setLoading(false);
-    }
-  };
-
-  fetchData();
-}, [id]);
-
-
-  const openModal = (charity) => {
-    setSelectedCharity(charity);
+  const openModal = (story) => {
+    setSelectedStory(story);
     setShowFullStory(false);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedCharity(null);
+    setSelectedStory(null);
     setShowFullStory(false);
   };
 
   return (
-    <div>
+    <div className="beneficiary-stories">
       <h2>Beneficiary Stories</h2>
       {loading ? (
         <p>Loading stories...</p>
       ) : error ? (
         <p>{error}</p>
-      ) : donatedCharityIds.length === 0 ? (
-        <p>You haven't donated to any charities yet.</p>
       ) : charities.length === 0 ? (
-        <p>No stories available for your donated charities.</p>
+        <p>You haven't donated to any charities with stories yet.</p>
       ) : (
         <ul>
-          {charities.map((charity) => (
-            <li key={charity.id}>
-              <h3>{charity.name}</h3>
-              <p>
-                {charity.beneficiary_story
-                  ? charity.beneficiary_story.slice(0, 100) + '...'
-                  : 'No story available.'}
-              </p>
-              <button
-                onClick={() => openModal(charity)}
-                aria-label={`View Beneficiary Story for ${charity.name}`}
-              >
-                View Beneficiary Story
-              </button>
-            </li>
-          ))}
+          {charities.map((charity) =>
+            charity.stories && charity.stories.length > 0 ? (
+              charity.stories.map((story) => (
+                <li key={story.id} className="story-card">
+                  <h3>{story.title}</h3>
+                  <p><strong>Charity:</strong> {charity.name}</p>
+                  {story.beneficiary_name && (
+                    <p><strong>Beneficiary:</strong> {story.beneficiary_name}</p>
+                  )}
+                  <p>
+                    {showFullStory && selectedStory?.id === story.id
+                      ? story.content
+                      : story.content.slice(0, 120) + '...'}
+                  </p>
+                  {story.image_url && (
+                    <img
+                      src={`http://127.0.0.1:5000${story.image_url}`}
+                      alt={story.title}
+                      style={{ maxWidth: '200px', marginTop: '10px' }}
+                    />
+                  )}
+                  <button onClick={() => openModal(story)}>
+                    View Full Story
+                  </button>
+                </li>
+              ))
+            ) : (
+              <li key={charity.id}>
+                <h3>{charity.name}</h3>
+                <p>No stories available for this charity.</p>
+              </li>
+            )
+          )}
         </ul>
       )}
-      {isModalOpen && (
-        <div>
-          <div>
-            <h2>{selectedCharity.name} - Beneficiary Story</h2>
-            <p>
-              {selectedCharity.beneficiary_story
-                ? showFullStory
-                  ? selectedCharity.beneficiary_story
-                  : selectedCharity.beneficiary_story.slice(0, 100) + '...'
-                : 'No beneficiary story found.'}
-            </p>
-            {selectedCharity.beneficiary_story && (
-              <button
-                onClick={() => setShowFullStory(!showFullStory)}
-                aria-label={showFullStory ? 'See Less' : 'See More'}
-              >
-                {showFullStory ? 'See Less' : 'See More'}
-              </button>
+
+      {isModalOpen && selectedStory && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{selectedStory.title}</h2>
+            <p><strong>Beneficiary:</strong> {selectedStory.beneficiary_name}</p>
+            <p>{showFullStory ? selectedStory.content : selectedStory.content.slice(0, 300) + '...'}</p>
+            {selectedStory.image_url && (
+              <img
+                src={`http://127.0.0.1:5000${selectedStory.image_url}`}
+                alt={selectedStory.title}
+                style={{ maxWidth: '100%', marginTop: '10px' }}
+              />
             )}
-            <button onClick={closeModal} aria-label="Close Modal">
-              Close
+            <button onClick={() => setShowFullStory(!showFullStory)}>
+              {showFullStory ? 'See Less' : 'See More'}
             </button>
+            <button onClick={closeModal}>Close</button>
           </div>
         </div>
       )}
@@ -116,4 +131,4 @@ useEffect(() => {
   );
 };
 
-export default BeneficiaryStory; 
+export default BeneficiaryStory;

@@ -20,13 +20,14 @@ from .routes.auth_routes import auth_bp
 from .routes.donor_routes import donor_bp
 from .routes.inventory_routes import inventory_bp
 from .routes.beneficiary_routes import beneficiary_bp
+from .routes.admin_routes import admin_bp
 
 from .models import Donor, Donation, User, Charity, Story, Inventory
 
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__, static_folder='static', static_url_path='')
+    app = Flask(__name__, static_folder='static', static_url_path='/static')
 
     # Configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -59,6 +60,7 @@ def create_app():
     app.register_blueprint(donor_bp, url_prefix='/donors')
     app.register_blueprint(donation_bp)
     app.register_blueprint(charity_bp, url_prefix='/charities')
+    app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(story_bp)
     app.register_blueprint(inventory_bp)
     app.register_blueprint(beneficiary_bp)

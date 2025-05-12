@@ -20,7 +20,7 @@ function BeneficiariesPage() {
 
   const handleAddBeneficiary = () => {
     const newBeneficiary = { name, location, number_of_people };
-    axios.post(`http://localhost:5000/charities/${charityId}/beneficiaries`, newBeneficiary)
+    axios.post(`http://localhost:5000/charities/${charityId}/beneficiaries, newBeneficiary`)
       .then(response => {
         setBeneficiaries([...beneficiaries, response.data]);
         setName('');
@@ -80,62 +80,62 @@ function BeneficiariesPage() {
         </tbody>
       </table>
 
-      <div className="add-form">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Number of People"
-          value={number_of_people}
-          onChange={(e) => setPeople(e.target.value)}
-        />
-        <button onClick={handleAddBeneficiary}>Add</button>
-      </div>
+  <div className="add-form">
+    <input
+      type="text"
+      placeholder="Name"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+    />
+    <input
+      type="text"
+      placeholder="Location"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+    />
+    <input
+      type="number"
+      placeholder="Number of People"
+      value={number_of_people}
+      onChange={(e) => setPeople(e.target.value)}
+    />
+    <button onClick={handleAddBeneficiary}>Add</button>
+  </div>
 
-      {selectedBeneficiary && (
-        <div className="sidebar">
-          <div className="sidebar-content">
-            <div className="sidebar-header">
-              <h3>{selectedBeneficiary.name}'s Inventory</h3>
-              <button className="close-button" onClick={closeSidebar}>X</button>
-            </div>
-            <table className="inventory-table">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {beneficiaryInventory.length > 0 ? (
-                  beneficiaryInventory.map((item) => (
-                    <tr key={item.id}>
-                      <td>{item.item_name}</td>
-                      <td>{item.quantity}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="2">No inventory found.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+  {selectedBeneficiary && (
+    <div className="sidebar">
+      <div className="sidebar-content">
+        <div className="sidebar-header">
+          <h3>{selectedBeneficiary.name}'s Inventory</h3>
+          <button className="close-button" onClick={closeSidebar}>X</button>
         </div>
-      )}
+        <table className="inventory-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {beneficiaryInventory.length > 0 ? (
+              beneficiaryInventory.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.item_name}</td>
+                  <td>{item.quantity}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="2">No inventory found.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
-    </div>
+  )}
+</div>
+</div>
   );
 }
 

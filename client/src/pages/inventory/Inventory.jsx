@@ -11,16 +11,18 @@ const InventoryPage = () => {
   const [newItem, setNewItem] = useState({
     item_name: "",
     quantity: "",
-    beneficiary_name: "",
+    beneficiary_id: "", 
   });
   const [editMode, setEditMode] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [beneficiaries, setBeneficiaries] = useState([]); 
 
   useEffect(() => {
     if (charityId) {
       fetchInventory();
+      fetchBeneficiaries();
     }
   }, [charityId]);
 
@@ -37,9 +39,19 @@ const InventoryPage = () => {
     }
   };
 
+  const fetchBeneficiaries = async () => {
+    try {
+      const res = await axios.get(`/charities/${charityId}/beneficiaries`);
+      setBeneficiaries(res.data);
+    } catch (error) {
+      setError("Failed to fetch beneficiaries");
+      console.error("Failed to fetch beneficiaries", error);
+    }
+  };
+
   const handleAddOrUpdateItem = async () => {
-    if (!newItem.item_name || !newItem.quantity) {
-      setError("Please provide both item name and quantity");
+    if (!newItem.item_name || !newItem.quantity || !newItem.beneficiary_id) {
+      setError("Please provide item name, quantity, and select a beneficiary");
       return;
     }
 
@@ -47,7 +59,7 @@ setLoading(true);
 try {
   if (editMode) {
     await axios.put(
-      (`/charities/${charityId}/inventory/${editingId}`),
+      `/charities/${charityId}/inventory/${editingId}`,
       {
         ...newItem,
         quantity: parseInt(newItem.quantity),
@@ -61,10 +73,10 @@ try {
   }
 
   fetchInventory();
-  setNewItem({ item_name: "", quantity: "", beneficiary_name: "" });
+  setNewItem({ item_name: "", quantity: "", beneficiary_id: "" });
   setEditMode(false);
   setEditingId(null);
-  setError(null); 
+  setError(null);
 } catch (error) {
   setError(editMode ? "Update failed" : "Add item failed");
   console.error(editMode ? "Update failed" : "Add item failed", error);
@@ -79,7 +91,7 @@ try {
     setNewItem({
       item_name: item.item_name,
       quantity: item.quantity,
-      beneficiary_name: item.beneficiary_name || "",
+      beneficiary_id: item.beneficiary_id || "", 
     });
   };
 
@@ -100,8 +112,8 @@ try {
     <div className="inventory-container">
       <h2 className="inventory-title">Inventory Page</h2>
 
-  {error && <div className="error-message">{error}</div>} {/* Display error messages */}
-  {loading && <div className="loading-message">Loading...</div>} {/* Display loading message */}
+  {error && <div className="error-message">{error}</div>}
+  {loading && <div className="loading-message">Loading...</div>}
 
   <div className="inventory-table">
     <div className="inventory-header">
@@ -153,15 +165,20 @@ try {
         setNewItem({ ...newItem, quantity: e.target.value })
       }
     />
-    <input
-      type="text"
-      placeholder="Beneficiary Name (optional)"
+    <select
       className="input-field"
-      value={newItem.beneficiary_name}
+      value={newItem.beneficiary_id}
       onChange={(e) =>
-        setNewItem({ ...newItem, beneficiary_name: e.target.value })
+        setNewItem({ ...newItem, beneficiary_id: e.target.value })
       }
-    />
+    >
+      <option value="">Select Beneficiary</option>
+      {beneficiaries.map((beneficiary) => (
+        <option key={beneficiary.id} value={beneficiary.id}>
+          {beneficiary.name}
+        </option>
+      ))}
+    </select>
     <div className="button-group">
       <button className="action-button" onClick={handleAddOrUpdateItem}>
         {editMode ? "Update Item" : "Add Item"}

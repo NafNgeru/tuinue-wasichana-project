@@ -36,7 +36,7 @@ const StoryPage = () => {
           <p className="story-date">{new Date(story.date).toLocaleDateString()}</p>
           <p className="story-content">{story.content}</p>
           {story.image_url && (
-            <img src={story.image_url} alt="Story visual" className="story-image" />
+            <img src={`http://127.0.0.1:5000${story.image_url}`} alt="Story visual" className="story-image" />
           )}
         </div>
       ))}
@@ -120,12 +120,6 @@ const StoryManagement = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-          />
-          <input
-            type="text"
-            placeholder="Or enter image URL"
-            value={imageURL}
-            onChange={handleImageURL}
           />
           {preview && (
             <img src={preview} alt="Preview" className="story-image" />

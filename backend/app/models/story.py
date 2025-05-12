@@ -21,7 +21,7 @@ class Story(db.Model):
             "title": self.title,
             "beneficiary_name": self.beneficiary_name,
             "content": self.content,
-            "image": self.image,
+            "image_url": self.image,
             "charity_id": self.charity_id, 
-            "created_at": self.created_at.isoformat() if self.created_at else None
+            "date": self.created_at.isoformat() if self.created_at else None
         }

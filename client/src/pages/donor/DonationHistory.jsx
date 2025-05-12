@@ -15,24 +15,24 @@ const DonationHistory = () => {
   useEffect(() => {
   const fetchData = async () => {
     try {
-      const donationRes = await fetch(`http://127.0.0.1:5000/donor/${id}/donations`);
+      const donationRes = await fetch(`http://127.0.0.1:5000/donors/${id}/donations`);
       const donationData = await donationRes.json();
       setDonations(donationData);
 
-      const charityRes = await fetch(`http://127.0.0.1:5000/donors/${id}/charities`);
-      const charityData = await charityRes.json();
-      const charityMap = charityData.reduce((map, charity) => {
-        map[charity.id] = charity.name;
-        return map;
-        
-      }, {});
-      setCharities(charityMap);
+  const charityRes = await fetch(`http://127.0.0.1:5000/donors/${id}/charities`);
+  const charityData = await charityRes.json();
+  const charityMap = charityData.reduce((map, charity) => {
+    map[charity.id] = charity.name;
+    return map;
+    
+  }, {});
+  setCharities(charityMap);
 
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to load donation history. Please try again.');
-      setLoading(false);
-    }
+  setLoading(false);
+} catch (err) {
+  setError('Failed to load donation history. Please try again.');
+  setLoading(false);
+}
   };
   fetchData();
 }, [id]);
@@ -83,3 +83,4 @@ const DonationHistory = () => {
 };
 
 export default DonationHistory;
+

@@ -29,8 +29,6 @@ def get_donation(charity_id):
     return jsonify([donation.to_dict() for donation in donations]), 200
 
 
-
-
 @donation_bp.route('/<int:id>', methods=['PUT'])
 def update_donation(id):
     donation = Donation.query.get(id)

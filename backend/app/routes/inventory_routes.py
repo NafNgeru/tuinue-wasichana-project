@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models.inventory import Inventory
+from app.models import Inventory, Beneficiary
 from app.db import db
 
 inventory_bp = Blueprint('inventory_routes',  __name__)
@@ -17,11 +17,18 @@ def get_inventory(charity_id):
 @inventory_bp.route('/charities/<int:charity_id>/inventory', methods=['POST'])
 def add_inventory_item(charity_id):
     data = request.get_json()
+
+    beneficiary_id = data.get('beneficiary_id')
+    beneficiary = Beneficiary.query.get(beneficiary_id)
+
+    if not beneficiary:
+        return jsonify({'error': 'Beneficiary not found'}), 404
+    
     new_item = Inventory(
         charity_id=charity_id,
         item_name=data['item_name'],
         quantity=data['quantity'],
-        beneficiary_name=data.get('beneficiary_name')
+        beneficiary_id=data.get('beneficiary_id')
     )
     db.session.add(new_item)
     db.session.commit()
@@ -55,5 +62,8 @@ def delete_inventory_item(charity_id, inventory_id):
 
 @inventory_bp.route('/charities/<int:charity_id>/beneficiaries/<int:beneficiary_id>/inventory', methods=['GET'])
 def get_inventory_for_beneficiary(charity_id, beneficiary_id):
-    inventory_items = Inventory.query.filter_by(beneficiary_id=beneficiary_id).all()
+    inventory_items = Inventory.query.filter_by(
+        charity_id=charity_id,
+        beneficiary_id=beneficiary_id
+        ).all()
     return jsonify([item.serialize() for item in inventory_items]), 200
