@@ -1,4 +1,6 @@
-#!/home/eli/project_5/tuinue-wasichana-project/venv/bin/python3
+#!/bin/sh
+'''exec' "/home/dan/Desktop/PLEASE HELP ME GOD/tuinue-wasichana-project/venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys
