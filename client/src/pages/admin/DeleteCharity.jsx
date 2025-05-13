@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import CharityCard from '../../components/CharityCard';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+// import Navbar from '../../components/Navbar';
+// import Footer from '../../components/Footer';
 import '../../styles/Admin.css';
 
 const DeleteCharity = () => {
@@ -41,7 +41,7 @@ const DeleteCharity = () => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <section className="delete-charity-page p-6 max-w-4xl mx-auto">
         <div className="mb-4">
           <Link to="/admin" className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
@@ -59,7 +59,7 @@ const DeleteCharity = () => {
           </ul>
         )}
       </section>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
