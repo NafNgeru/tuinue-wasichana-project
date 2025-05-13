@@ -25,7 +25,7 @@ def get_charities_donated_to(donor_id):
 
 
 @donor_bp.route('/<int:donor_id>/donate/<int:charity_id>', methods=['POST'])
-@login_required
+# @login_required
 def donate_to_charity(donor_id, charity_id):
     data = request.get_json()
     

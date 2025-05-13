@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from app.db import db
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
-# from flask_login import UserMixin 
+from flask_login import UserMixin 
 from app import db
 
 bcrypt = Bcrypt()
@@ -24,7 +24,6 @@ class User(db.Model, UserMixin):
     donor=db.relationship("Donor", back_populates="user", uselist=False, cascade="all, delete-orphan", single_parent=True)
     charity=db.relationship("Charity", back_populates="user", uselist=False, cascade="all, delete-orphan", single_parent=True)
 
-
     def __repr__(self):
         return f'<User {self.username}>'
 
@@ -41,7 +40,3 @@ class User(db.Model, UserMixin):
         except Exception:
             return None
         return User.query.get(user_id)
-    
-    # def set_password(self, password):
-    #     self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-    

@@ -26,7 +26,7 @@ function CharityCard({charity}){
       <img className="item-image" alt="charity" src={charity.image} />
       <h2 className="item-title">{charity.full_name}</h2>
       <div className="card-buttons">
-        <button className="donate" onClick={() => navigate('/donate')}><p>Donate</p></button>
+        <button className="donate" onClick={() => navigate('/donate/:id')}><p>Donate</p></button>
         <button className="view" onClick={() => navigate(`/charity-details/${charity.id}/`)}>View</button>
         <button className="favorite" onClick={() => toggleFavorite(charity)}>
           {favorited ? <AiFillHeart color="red" /> : <AiOutlineHeart />}

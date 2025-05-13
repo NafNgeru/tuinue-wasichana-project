@@ -18,6 +18,7 @@ from .routes.auth_routes import auth_bp
 from .routes.donor_routes import donor_bp
 from .routes.inventory_routes import inventory_bp
 from .routes.beneficiary_routes import beneficiary_bp
+from .routes.admin_routes import admin_bp
 
 
 from .models import Donor, Donation, User, Charity, Story, Inventory

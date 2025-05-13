@@ -46,9 +46,9 @@
   width: 100%;
 }
 
-.h-[450px] {
+/* .h-[450px] {
   height: 450px;
-}
+} */
 
 .object-cover {
   object-fit: cover;

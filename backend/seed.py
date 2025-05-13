@@ -104,7 +104,7 @@ charity_data = [
 
 with app.app_context():
     print("🧹 Dropping all tables...")
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
 
     print("🌱 Seeding users and charities...")

@@ -2,8 +2,26 @@ import React, { useState } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useParams } from "react-router-dom";
 import "../../styles/DonationPage.css";
+import paypalLogo from "../../assets/paypal_888870.png";
+
+
+const Modal = ({ message, onClose }) => (
+  <div className="fixed inset-0 z-500 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full text-center">
+      <p className="text-gray-800 mb-4">{message}</p>
+      <button
+        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        onClick={onClose}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+);
 
 const DonationPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [amount, setAmount] = useState("");
   const [selectedQuickAmount, setSelectedQuickAmount] = useState(null);
 
@@ -24,7 +42,7 @@ const DonationPage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          charity_id: parseInt(charityId), 
+          charity_id: parseInt(id), 
           amount: parseFloat(amount),
         }),
       });
@@ -38,7 +56,8 @@ const DonationPage = () => {
       console.log("Donation recorded:", result);
     } catch (err) {
       console.error("Backend donation error:", err);
-      alert("Donation succeeded with PayPal, but saving to backend failed.");
+      setModalMessage("Donation succeeded with PayPal, but saving to backend failed.");
+      setShowModal(true);
     }
   };
 
@@ -46,9 +65,7 @@ const DonationPage = () => {
     <section className="donation-container">
       <div className="donation-left">
         <img
-          src="src/assets/paypal_888870.png"
-          alt="PayPal Logo"
-          className="paypal-logo"
+          src={paypalLogo} alt="PayPal Logo" className="paypal-logo"
         />
       </div>
 
@@ -100,19 +117,29 @@ const DonationPage = () => {
             }}
             onApprove={(data, actions) => {
               return actions.order.capture().then(async (details) => {
-                alert(
-                  `Donation successful! Thank you, ${details.payer.name.given_name}.`
-                );
+                setModalMessage(`Donation successful! Thank you, ${details.payer.name.given_name}.`);
+                setShowModal(true);
+
                 await handleBackendDonation(); 
               });
             }}
             onError={(err) => {
               console.error("PayPal Checkout error:", err);
-              alert("An error occurred during payment.");
+              setModalMessage("An error occurred during payment.");
+              setShowModal(true);
             }}
           />
         </div>
       </div>
+      {showModal && (
+      <Modal
+        message={modalMessage}
+        onClose={() => {
+          setShowModal(false);
+          setModalMessage("");
+        }}
+      />
+    )}
     </section>
   );
 };

@@ -19,11 +19,11 @@ const PublicRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      {/* <Route path="charitydashboard" element={<CharityDashboard />} /> */}
+      <Route path="charitydashboard" element={<CharityDashboard />} />
       <Route path="about" element={<AboutPage />} />
       <Route path="charities" element={<CharityListingPage />} />
       <Route path="charity-details/:id/" element={<CharityDetails />} />
-      <Route path="donate" element={<DonationPage />} />
+      <Route path="donate/:id" element={<DonationPage />} />
       <Route path="login" element={<LoginForm />} />
       <Route path="register" element={<RegistrationChoice />} />
       <Route path="register/charity/:userType" element={<CharityRegistration />} />

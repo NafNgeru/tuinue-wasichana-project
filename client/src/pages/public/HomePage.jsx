@@ -335,7 +335,7 @@ const HomePage = () => {
         </div>
       </section>
       {/* CONTACT SECTION */}
-      <section className="py-12 bg-blue-100 text-center">
+      {/* <section className="py-12 bg-blue-100 text-center">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
           Connect With Us
         </h2>
@@ -386,7 +386,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
     </main>
   );
 };

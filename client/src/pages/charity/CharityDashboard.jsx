@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "../../styles/CharityDashboard.css";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/auth/authSlice";
-import { Link } from "react-router-dom";
 
 export default function CharityDashboard() {
   const [donations, setDonations] = useState([]);
@@ -26,13 +24,9 @@ export default function CharityDashboard() {
   }, [id]);
 
   const handleLogout = () => {
-    // localStorage.clear();
-    // navigate("/login");
-
     dispatch(setUser(null));
-    localStorage.removeItem('user');
-    navigate('/login');
-
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   const totalDonations = donations.reduce((sum, d) => sum + d.amount, 0);
@@ -41,53 +35,96 @@ export default function CharityDashboard() {
     .reduce((sum, d) => sum + d.amount, 0);
 
   return (
-    <div className="dashboard-container">
-      <aside className="sidebar">
-        <h2 className="sidebar-title">Tuinue Wasichana</h2>
-        <nav className="sidebar-nav">
-          <Link to={`/charity/${id}`} className="nav-button">Dashboard</Link>
-          <Link to={`/charity/${id}/beneficiaries`} className="nav-button">Beneficiaries</Link>
-          <Link to={`/charity/${id}/inventory`} className="nav-button">Inventory</Link>
-          <Link to={`/charity/${id}/stories`} className="nav-button">Stories</Link>
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <aside className="w-[400px] bg-blue-100 p-5 shadow-lg">
+        <h2 className="text-2xl font-bold mb-10">Tuinue Wasichana</h2>
+        <nav className="flex flex-col gap-4">
+          <Link
+            to={`/charity/${id}`}
+            className="bg-[#445d82] text-white text-center py-3 rounded-xl font-medium hover:bg-orange-400"
+          >
+            Dashboard
+          </Link>
+          <Link
+            to={`/charity/${id}/beneficiaries`}
+            className="bg-[#445d82] text-white text-center py-3 rounded-xl font-medium hover:bg-orange-400"
+          >
+            Beneficiaries
+          </Link>
+          <Link
+            to={`/charity/${id}/inventory`}
+            className="bg-[#445d82] text-white text-center py-3 rounded-xl font-medium hover:bg-orange-400"
+          >
+            Inventory
+          </Link>
+          <Link
+            to={`/charity/${id}/stories`}
+            className="bg-[#445d82] text-white text-center py-3 rounded-xl font-medium hover:bg-orange-400"
+          >
+            Stories
+          </Link>
         </nav>
-
-        <button onClick={handleLogout} className="logout-button">Logout</button>
+        <button
+          onClick={handleLogout}
+          className="mt-10 bg-[#445d82] text-white w-full py-3 rounded-xl hover:bg-purple-800"
+        >
+          Logout
+        </button>
       </aside>
 
-      <main className="main-content">
-        <header className="dashboard-header">
-          <h1>Charity Dashboard</h1>
-        </header>
+      
+      {/* Main Content */}
+<main className="flex-1 p-8">
+  <div className="max-w-screen-lg mx-auto">
+    <header className="mb-8 text-center">
+      <h1 className="text-3xl font-bold text-gray-800">Charity Dashboard</h1>
+    </header>
 
-        <section className="summary-cards">
-          <div className="card">
-            <h3>Donations</h3>
-            <p className="amount">$ {(totalDonations - anonymousDonations).toLocaleString()}</p>
-          </div>
-          <div className="card">
-            <h3>Anonymous Donations</h3>
-            <p className="amount">$ {anonymousDonations.toLocaleString()}</p>
-          </div>
-          <div className="card">
-            <h3>Total Donations</h3>
-            <p className="amount">$ {totalDonations.toLocaleString()}</p>
-          </div>
-        </section>
+    {/* Summary Cards - Centered */}
+    <section className="flex flex-wrap justify-center gap-6 mb-10">
+      <div className="relative bg-white p-6 rounded-2xl shadow-md hover:shadow-xl hover:z-10 transition duration-300 w-[300px]">
+        <h3 className="text-gray-700 mb-2">Donations</h3>
+        <p className="text-xl font-bold text-blue-600">
+          $ {(totalDonations - anonymousDonations).toLocaleString()}
+        </p>
+      </div>
+      <div className="relative bg-white p-6 rounded-2xl shadow-md hover:shadow-xl hover:z-10 transition duration-300 w-[300px]">
+        <h3 className="text-gray-700 mb-2">Anonymous Donations</h3>
+        <p className="text-xl font-bold text-blue-600">
+          $ {anonymousDonations.toLocaleString()}
+        </p>
+      </div>
+      <div className="relative bg-white p-6 rounded-2xl shadow-md hover:shadow-xl hover:z-10 transition duration-300 w-[300px]">
+        <h3 className="text-gray-700 mb-2">Total Donations</h3>
+        <p className="text-xl font-bold text-blue-600">
+          $ {totalDonations.toLocaleString()}
+        </p>
+      </div>
+    </section>
 
-        <section className="donors-list">
-          <div className="card">
-            <h2>Donors</h2>
-            <ul>
-              {donations.map((donation) => (
-                <li key={donation.id} className="donor-item">
-                  <span>{donation.donor_name}</span>
-                  <span>$ {donation.amount.toLocaleString()}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      </main>
+    {/* Donors List - Centered */}
+    <section className="flex justify-center">
+      <div className="bg-white p-6 rounded-2xl shadow-md w-full max-w-2xl">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
+          Donors
+        </h2>
+        <ul className="divide-y divide-gray-200">
+          {donations.map((donation) => (
+            <li
+              key={donation.id}
+              className="flex justify-between py-2 text-gray-700"
+            >
+              <span>{donation.donor_name}</span>
+              <span>$ {donation.amount.toLocaleString()}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+
     </div>
   );
 }
