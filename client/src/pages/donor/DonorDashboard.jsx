@@ -3,31 +3,36 @@ import { useNavigate, useParams, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from "../../features/auth/authSlice";
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import "../../styles/DonorDashboard.css";
 
 const CharityCard = ({ charity, handleDonateClick, toggleFavorite, favorited }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="card">
-      <img className="card-img" alt="charity" src={
+    <div className="relative bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300 w-[300px]">
+      <img className="w-full h-40 object-cover rounded-xl mb-4" alt="charity" src={
     charity.image.startsWith("http")
       ? charity.image
       : `http://127.0.0.1:5000/${charity.image}`} />
-      <div className="card-content">
-        <h3>{charity.full_name}</h3>
-        <p className="card-description">{charity.description || 'No description available.'}</p>
-        <div className="card-buttons">
-          <button className="button" onClick={() => handleDonateClick(charity.id)}>
-            Donate Now
-          </button>
-          <button className="button button-secondary" onClick={() => navigate(`/charity-details/${charity.id}/`)}>
-            View
-          </button>
-          <button className="button favorite" onClick={() => toggleFavorite(charity)}>
-            {favorited ? <AiFillHeart color="red" /> : <AiOutlineHeart />}
-          </button>
-        </div>
+      <h3 className="text-xl font-bold text-gray-800 mb-2">{charity.full_name}</h3>
+      <p className="text-gray-600 text-sm mb-4">
+        {charity.description || 'No description available.'}
+      </p>
+      <div className="flex justify-between items-center">
+        <button
+          className="bg-[#445d82] text-white px-4 py-2 rounded-xl hover:bg-orange-400"
+          onClick={() => handleDonateClick(charity.id)}
+        >
+          Donate Now
+        </button>
+        <button
+          className="text-[#445d82] hover:text-orange-400 font-medium"
+          onClick={() => navigate(`/charity-details/${charity.id}`)}
+        >
+          View
+        </button>
+        <button onClick={() => toggleFavorite(charity)}>
+          {favorited ? <AiFillHeart className="text-red-500 text-xl" /> : <AiOutlineHeart className="text-xl" />}
+        </button>
       </div>
     </div>
   );
@@ -88,72 +93,70 @@ const DonorDashboard = () => {
   const displayedCharities = tab === 'favorites' ? favoriteCharities : charities;
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-body">
-        <aside className="sidebar">
-          <h2>Welcome</h2>
-          <nav>
-            <ul className="nav-links">
-              <li>
-                <NavLink to={`/donor/${id}`} end className="nav-link">
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to={`/donor/${id}/donation-history`} className="nav-link">
-                  Donation History
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to={`/donor/${id}/beneficiary-stories`} className="nav-link">
-                  Beneficiary Stories
-                </NavLink>
-              </li>
-            </ul>
-            <button onClick={handleLogout} className="button">Logout</button>
-          </nav>
-        </aside>
-        <main className="main-content">
-          <div className="charity-header">
-            <h2>Choose a Charity to Support</h2>
-            <div className="tabs">
-              <button
-                className={`tab-button ${tab === 'all' ? 'active' : ''}`}
-                onClick={() => setTab('all')}
-              >
-                All Charities
-              </button>
-              <button
-                className={`tab-button ${tab === 'favorites' ? 'active' : ''}`}
-                onClick={() => setTab('favorites')}
-              >
-                Favorites
-              </button>
-            </div>
-          </div>
+    <div className="flex min-h-screen bg-gray-50">
+      <aside className="w-[400px] bg-blue-100 p-5 shadow-lg">
+        <h2 className="text-2xl font-bold mb-10 text-[#445d82]">Welcome {user?.full_name}</h2>
+        <nav className="flex flex-col gap-4">
+          <NavLink to={`/donor/${id}`} end className="bg-[#445d82] text-white text-center py-3 rounded-xl font-medium hover:bg-orange-400">
+            Home
+          </NavLink>
+          <NavLink to={`/donor/${id}/donation-history`} className="bg-[#445d82] text-white text-center py-3 rounded-xl font-medium hover:bg-orange-400">
+            Donation History
+          </NavLink>
+          <NavLink to={`/donor/${id}/beneficiary-stories`} className="bg-[#445d82] text-white text-center py-3 rounded-xl font-medium hover:bg-orange-400">
+            Beneficiary Stories
+          </NavLink>
+          <button
+            onClick={handleLogout}
+            className="mt-10 bg-[#445d82] text-white w-full py-3 rounded-xl hover:bg-purple-800"
+          >
+            Logout
+          </button>
+        </nav>
+      </aside>
 
-          {loading ? (
-            <p>Loading charities...</p>
-          ) : error ? (
-            <p>{error}</p>
-          ) : displayedCharities.length === 0 ? (
-            <p>{tab === 'favorites' ? 'No favorites yet.' : 'No charities available.'}</p>
-          ) : (
-            <div className="charity-grid">
-              {displayedCharities.map((charity) => (
-                <CharityCard
-                  key={charity.id}
-                  charity={charity}
-                  handleDonateClick={handleDonateClick}
-                  toggleFavorite={toggleFavorite}
-                  favorited={favoriteCharities.some((c) => c.id === charity.id)}
-                />
-              ))}
-            </div>
-          )}
-        </main>
-      </div>
+  <main className="flex-1 p-8">
+    <div className="max-w-screen-xl mx-auto">
+      <header className="mb-8 text-center">
+        <h1 className="text-3xl font-bold text-gray-800">Choose a Charity to Support</h1>
+        <div className="flex justify-center gap-4 mt-4">
+          <button
+            className={`px-4 py-2 rounded-xl font-medium ${tab === 'all' ? 'bg-[#445d82] text-white' : 'bg-white text-[#445d82] border border-[#445d82]'}`}
+            onClick={() => setTab('all')}
+          >
+            All Charities
+          </button>
+          <button
+            className={`px-4 py-2 rounded-xl font-medium ${tab === 'favorites' ? 'bg-[#445d82] text-white' : 'bg-white text-[#445d82] border border-[#445d82]'}`}
+            onClick={() => setTab('favorites')}
+          >
+            Favorites
+          </button>
+        </div>
+      </header>
+
+      {loading ? (
+        <p className="text-center text-gray-600">Loading charities...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">{error}</p>
+      ) : displayedCharities.length === 0 ? (
+        <p className="text-center text-gray-600">{tab === 'favorites' ? 'No favorites yet.' : 'No charities available.'}</p>
+      ) : (
+        <div className="flex flex-wrap gap-6 justify-start">
+          {displayedCharities.map((charity) => (
+            <CharityCard
+              key={charity.id}
+              charity={charity}
+              handleDonateClick={handleDonateClick}
+              toggleFavorite={toggleFavorite}
+              favorited={favoriteCharities.some((c) => c.id === charity.id)}
+            />
+          ))}
+        </div>
+      )}
     </div>
+  </main>
+</div>
   );
 };
 
