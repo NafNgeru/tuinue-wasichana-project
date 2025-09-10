@@ -9,7 +9,7 @@ from config import TestConfig
 
 # Dynamically load the appropriate .env file based on the FLASK_ENV environment variable
 env_file = '.env.test' if os.environ.get('FLASK_ENV') == 'testing' else '.env'
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), env_file))
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), env_file))
 
 from .routes.story_routes import story_bp
 from .routes.charity_routes import charity_bp
