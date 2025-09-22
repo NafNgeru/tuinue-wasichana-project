@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/CharityDetails.css';
+import BASE_URL from '../../api';
 
 const CharityDetails = ({ charity }) => {
   const navigate = useNavigate();

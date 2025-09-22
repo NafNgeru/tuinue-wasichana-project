@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { api } from '../../api';
 import { Link, useParams } from 'react-router-dom';
 
 function BeneficiariesPage() {
@@ -12,30 +12,35 @@ function BeneficiariesPage() {
   const [beneficiaryInventory, setBeneficiaryInventory] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/charities/${charityId}/beneficiaries`)
-      .then(response => setBeneficiaries(response.data))
+    api(`/charities/${charityId}/beneficiaries`)
+      .then((data) => setBeneficiaries(data))
       .catch(error => console.error('Error fetching beneficiaries:', error));
-  }, []);
+  }, [charityId]);
 
-  const handleAddBeneficiary = () => {
-    const newBeneficiary = { name, location, number_of_people };
-    axios.post(`http://localhost:5000/charities/${charityId}/beneficiaries`, newBeneficiary)
-      .then(response => {
-        setBeneficiaries([...beneficiaries, response.data]);
-        setName('');
-        setLocation('');
-        setPeople('');
-      })
-      .catch(error => console.error('Error adding beneficiary:', error));
+  const handleAddBeneficiary = async () => {
+    const newBeneficiary = { name, location, number_of_people: parseInt(number_of_people, 10) };
+    try {
+      const created = await api(`/charities/${charityId}/beneficiaries`, {method: "POST", body: newBeneficiary,});
+
+      setBeneficiaries([...beneficiaries, created]);
+      setName('');
+      setLocation('');
+      setPeople('');
+    } catch (error) {
+      console.error('Error adding beneficiary:', error);
+    }
   };
 
-  const handleViewInventory = (beneficiaryId, beneficiaryName) => {
-    axios.get(`http://localhost:5000/charities/${charityId}/beneficiaries/${beneficiaryId}/inventory`)
-      .then(response => {
-        setSelectedBeneficiary({ id: beneficiaryId, name: beneficiaryName });
-        setBeneficiaryInventory(response.data);
-      })
-      .catch(error => console.error('Error fetching inventory:', error));
+  const handleViewInventory = async (beneficiaryId, beneficiaryName) => {
+    try {
+      const inventory = await api(
+        `/charities/${charityId}/beneficiaries/${beneficiaryId}/inventory`
+      );
+      setSelectedBeneficiary({ id: beneficiaryId, name: beneficiaryName });
+      setBeneficiaryInventory(inventory);
+    } catch (error) {
+      console.error("Error fetching inventory:", error);
+    }
   };
 
   const closeSidebar = () => {

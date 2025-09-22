@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import api from "../../services/api";
+import { api } from "../../api";
 
 const CharityApproval = () => {
   const [pendingCharities, setPendingCharities] = useState([]);
@@ -8,8 +8,8 @@ const CharityApproval = () => {
 
   const fetchPendingCharities = async () => {
     try {
-      const response = await api.get("http://localhost:5000/admin/pending");
-      setPendingCharities(response.data);
+      const response = await api("/admin/pending", { method: "GET" });
+      setPendingCharities(response);
       setLoading(false);
     } catch (err) {
       setError("Failed to fetch pending charities.");
@@ -23,8 +23,9 @@ const CharityApproval = () => {
 
   const handleApprove = async (id) => {
     try {
-      await api.post(`http://localhost:5000/admin/${id}/approve`);
+      const res = await api(`/admin/${id}/approve`, { method: "POST" });
       setPendingCharities((prev) => prev.filter((charity) => charity.id !== id));
+      alert(res.message);
     } catch (err) {
       setError("Failed to approve charity.");
     }
@@ -32,8 +33,9 @@ const CharityApproval = () => {
 
   const handleDecline = async (id) => {
     try {
-      await api.post(`http://localhost:5000/admin/${id}/decline`);
+      await api(`/admin/${id}/decline`, { method: "POST" });
       setPendingCharities((prev) => prev.filter((charity) => charity.id !== id));
+      alert(res.message);
     } catch (err) {
       setError("Failed to decline charity.");
     }

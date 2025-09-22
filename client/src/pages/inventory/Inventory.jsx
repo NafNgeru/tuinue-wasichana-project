@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/InventoryPage.css";
 import { useParams } from "react-router-dom";
+import BASE_URL from "../../api"; 
 
 const InventoryPage = () => {
   const { id: charityId } = useParams();
-  axios.defaults.baseURL = "http://localhost:5000";
+  axios.defaults.baseURL = BASE_URL;
 
   const [inventory, setInventory] = useState([]);
   const [newItem, setNewItem] = useState({

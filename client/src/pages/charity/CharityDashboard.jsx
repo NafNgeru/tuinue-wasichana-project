@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/auth/authSlice";
+import BASE_URL from "../../api";
 
 export default function CharityDashboard() {
   const [donations, setDonations] = useState([]);
@@ -12,7 +13,7 @@ export default function CharityDashboard() {
   useEffect(() => {
     const fetchDonations = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/donations/${id}`);
+        const response = await fetch(`${BASE_URL}/donations/${id}`);
         if (!response.ok) throw new Error("Failed to fetch donations");
         const data = await response.json();
         setDonations(data);

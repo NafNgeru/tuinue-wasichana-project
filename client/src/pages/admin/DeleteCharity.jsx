@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from '../../api';
 import { Link } from 'react-router-dom';
 import CharityCard from '../../components/CharityCard';
 // import Navbar from '../../components/Navbar';
@@ -38,8 +38,8 @@ const DeleteCharity = () => {
 
   const fetchCharities = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/charities/');
-      setCharities(response.data);
+      const response = await api('/charities/');
+      setCharities(response);
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch charities.');
@@ -58,7 +58,7 @@ const DeleteCharity = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/charities/${charityToDelete}`);
+      await api(`/charities/${charityToDelete}`, { method: 'DELETE' });
       setCharities((prev) => prev.filter((charity) => charity.id !== charityToDelete));
     } catch (err) {
       setError('Failed to delete charity.');

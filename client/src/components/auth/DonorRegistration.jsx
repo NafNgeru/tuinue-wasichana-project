@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../services/api";
+import { api } from "../../api";
 import Logo from "../../assets/logo.svg"; // Assuming you want to use the same logo
 
 const DonorRegistration = () => {
@@ -30,11 +30,11 @@ const DonorRegistration = () => {
 
   const checkUsername = async (username) => {
     try {
-      const response = await api.get(
-        `http://localhost:5000/auth/check-username/${username}`
+      const response = await api(
+        `/auth/check-username/${username}`
       );
-      setUsernameAvailable(response.data.available);
-      return response.data.available;
+      setUsernameAvailable(response.available);
+      return response.available;
     } catch (error) {
       console.error("Error checking:", error);
       setUsernameAvailable(false);
@@ -54,7 +54,10 @@ const DonorRegistration = () => {
       return;
     }
     try {
-      await api.post("http://localhost:5000/auth/register_donor", formData);
+      await api("/auth/register_donor", {
+        method: "POST",
+        body: formData,
+      });
       setMessage("Registration successful!");
       setFormData({
         name: "",

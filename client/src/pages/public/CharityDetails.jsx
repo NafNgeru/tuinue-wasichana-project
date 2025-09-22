@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/CharityDetails.css';
+import BASE_URL from '../../api';
+
 
 const CharityDetails = () => {
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ const CharityDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/charities/${id}`)
+    fetch(`${BASE_URL}/charities/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
         return res.json();

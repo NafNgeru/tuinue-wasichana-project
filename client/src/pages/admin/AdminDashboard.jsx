@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/Admin.css';
-import axios from 'axios';
+import { api } from "../../api";;
 import back1 from '../../assets/images/back1.jpeg';
 import back2 from '../../assets/images/back2.jpeg';
 import back3 from '../../assets/images/back3.jpg';
@@ -14,8 +14,8 @@ const AdminDashboard = () => {
 
   const fetchCharities = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/charities/');
-      setCharities(response.data);
+      const data = await api('/charities/');
+      setCharities(data);
     } catch (error) {
       console.error('Error fetching charities:', error);
     }
@@ -32,12 +32,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchPendingCount = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/admin/pending");
-        if (!response.ok) {
-          throw new Error("Failed to fetch pending applications");
-        }
-
-        const data = await response.json();
+        const data = await api("/admin/pending");
         setPendingCount(data.length);
       } catch (error) {
         console.error("Error fetching pending count:", error);

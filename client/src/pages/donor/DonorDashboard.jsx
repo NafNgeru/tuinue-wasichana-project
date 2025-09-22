@@ -3,6 +3,7 @@ import { useNavigate, useParams, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from "../../features/auth/authSlice";
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import BASE_URL from '../../api';
 
 const CharityCard = ({ charity, handleDonateClick, toggleFavorite, favorited }) => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const CharityCard = ({ charity, handleDonateClick, toggleFavorite, favorited }) 
       <img className="w-full h-40 object-cover rounded-xl mb-4" alt="charity" src={
     charity.image.startsWith("http")
       ? charity.image
-      : `http://127.0.0.1:5000/${charity.image}`} />
+      : `${BASE_URL}/${charity.image}`} />
       <h3 className="text-xl font-bold text-gray-800 mb-2">{charity.full_name}</h3>
       <p className="text-gray-600 text-sm mb-4">
         {charity.description || 'No description available.'}
@@ -51,7 +52,7 @@ const DonorDashboard = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/charities/')
+    fetch(`${BASE_URL}/charities/`)
       .then((res) => res.json())
       .then((data) => {
         setCharities(data);

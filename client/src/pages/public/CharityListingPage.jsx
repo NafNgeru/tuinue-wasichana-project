@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../styles/CharityListingPage.css"
 import { useNavigate } from 'react-router-dom'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import BASE_URL from '../../api';
 
 function CharityCard({charity}){
     const navigate = useNavigate ();
@@ -26,7 +27,7 @@ function CharityCard({charity}){
       <img className="item-image" alt="charity" src={
     charity.image.startsWith("http")
       ? charity.image
-      : `http://127.0.0.1:5000/${charity.image}`} />
+      : `${BASE_URL}/${charity.image}`} />
       <h2 className="item-title">{charity.full_name}</h2>
       <div className="card-buttons">
         <button className="donate" onClick={() => navigate('/donate/:id')}><p>Donate</p></button>
@@ -44,7 +45,7 @@ function CharityListingPage(){
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      fetch("http://127.0.0.1:5000/charities/")
+      fetch(`${BASE_URL}/charities/`)
         .then((res) => res.json())
         .then((data) => {
           setCharityItems(data);
@@ -53,6 +54,7 @@ function CharityListingPage(){
         .catch(err => {
           console.error('Fetch error:', err);
           setLoading(false);
+          console.log("API request to:", `${BASE_URL}/charities/`);
         });
     }, []);    
 

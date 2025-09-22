@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import api from "../../services/api";
+import { api } from "../../api";
 import { setUser } from "../../features/auth/authSlice";
 import Logo from "../../assets/logo.svg"; // Assuming you want to use the same logo
 
@@ -30,12 +30,13 @@ const LoginForm = () => {
     }
   
     try {
-      const response = await api.post(
-        "http://localhost:5000/auth/login",
-        formData
-      );
+      const response = await api(
+        "/auth/login", {
+        method: "POST",
+        body: formData,
+      });
   
-      const user = response.data;
+      const user = response;
       const { role } = user;
   
       // Check charity approval status

@@ -1,7 +1,7 @@
-import api from '../../services/api';
+import { api } from "../../api";
 
 const login = (credentials) => {
-  return api.post('/auth/login', credentials);
+  return api('/auth/login', {method: 'POST', body: credentials,});
 };
 
 const authService = {

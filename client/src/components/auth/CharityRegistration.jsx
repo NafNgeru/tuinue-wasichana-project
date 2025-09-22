@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../../services/api";
+import { api } from "../../api";
 import Logo from "../../assets/logo.svg";
 
 const CharityRegistration = () => {
@@ -38,11 +38,11 @@ const CharityRegistration = () => {
 
   const checkUsername = async (username) => {
     try {
-      const response = await api.get(
-        `http://localhost:5000/auth/check-username/${username}`
+      const response = await api(
+        `/auth/check-username/${username}`
       );
-      setUsernameAvailable(response.data.available);
-      return response.data.available;
+      setUsernameAvailable(response.available);
+      return response.available;
     } catch (error) {
       console.error("Error checking username:", error);
       setUsernameAvailable(false);
@@ -80,10 +80,10 @@ const CharityRegistration = () => {
         data.append("logo", formData.logo);
       }
 
-      await api.post("http://localhost:5000/auth/apply", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      await api("/auth/apply", {
+        method: "POST",
+        body: data,
+        isForm: true,
       });
       setMessage("Application submitted successfully! Await admin approval.");
       setFormData({

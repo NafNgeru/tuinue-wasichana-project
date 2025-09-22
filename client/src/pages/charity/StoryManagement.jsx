@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/StoryManagement.css';
+import BASE_URL from '../../api';
 
 const Modal = ({ message, onClose }) => (
   <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
@@ -22,7 +23,7 @@ const StoryPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/charity/${id}/stories`)
+    fetch(`${BASE_URL}/charity/${id}/stories`)
       .then((res) => res.json())
       .then((data) => {
         setStories(data);
@@ -50,7 +51,7 @@ const StoryPage = () => {
           <p className="story-content">{story.content}</p>
           {story.image_url && (
             <img
-              src={`http://127.0.0.1:5000${story.image_url}`}
+              src={`${BASE_URL}${story.image_url}`}
               alt="Story visual"
               className="story-image"
             />
@@ -96,7 +97,7 @@ if (imageFile) {
 }
 
 try {
-  const res = await fetch(`http://127.0.0.1:5000/charity/${id}/stories`, {
+  const res = await fetch(`${BASE_URL}/charity/${id}/stories`, {
     method: 'POST',
     body: formData,
   });

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import "../../styles/DonationHistory.css";
+import BASE_URL from '../../api';
 // import { apiFetch } from '../utils/api';
 
 const DonationHistory = () => {
@@ -15,11 +16,11 @@ const DonationHistory = () => {
   useEffect(() => {
   const fetchData = async () => {
     try {
-      const donationRes = await fetch(`http://127.0.0.1:5000/donors/${id}/donations`);
+      const donationRes = await fetch(`${BASE_URL}/donors/${id}/donations`);
       const donationData = await donationRes.json();
       setDonations(donationData);
 
-  const charityRes = await fetch(`http://127.0.0.1:5000/donors/${id}/charities`);
+  const charityRes = await fetch(`${BASE_URL}/donors/${id}/charities`);
   const charityData = await charityRes.json();
   const charityMap = charityData.reduce((map, charity) => {
     map[charity.id] = charity.name;

@@ -3,7 +3,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useParams } from "react-router-dom";
 import "../../styles/DonationPage.css";
 import paypalLogo from "../../assets/paypal_888870.png";
-
+import BASE_URL from "../../api"; 
 
 
 const Modal = ({ message, onClose }) => (
@@ -52,7 +52,7 @@ const DonationPage = () => {
 
   const handleBackendDonation = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/donors/${donorId}/donate/${charityId}`, {
+      const response = await fetch(`${BASE_URL}/donors/${donorId}/donate/${charityId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

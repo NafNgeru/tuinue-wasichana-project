@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import "../../styles/BeneficiaryStory.css";
+import BASE_URL from '../../api';
 
 const BeneficiaryStory = () => {
   const [charities, setCharities] = useState([]);
@@ -15,17 +16,17 @@ const BeneficiaryStory = () => {
     const fetchData = async () => {
       if (!id) return;
       try {
-        const donationsRes = await fetch(`http://127.0.0.1:5000/donors/${id}/donations`);
+        const donationsRes = await fetch(`${BASE_URL}/donors/${id}/donations`);
         const donations = await donationsRes.json();
     
         const charityIds = [...new Set(donations.map((d) => d.charity_id).filter(id => id !== undefined))];
     
         const charitiesWithStories = await Promise.all(
           charityIds.map(async (charityId) => {
-            const charityRes = await fetch(`http://127.0.0.1:5000/charities/${charityId}`);
+            const charityRes = await fetch(`${BASE_URL}/charities/${charityId}`);
             const charity = await charityRes.json();
     
-            const storiesRes = await fetch(`http://127.0.0.1:5000/charity/${charityId}/stories`);
+            const storiesRes = await fetch(`${BASE_URL}/charity/${charityId}/stories`);
             const stories = await storiesRes.json();
     
             return {
@@ -87,7 +88,7 @@ const BeneficiaryStory = () => {
                   </p>
                   {story.image_url && (
                     <img
-                      src={`http://127.0.0.1:5000${story.image_url}`}
+                      src={`${BASE_URL}${story.image_url}`}
                       alt={story.title}
                       style={{ maxWidth: '200px', marginTop: '10px' }}
                     />
@@ -112,7 +113,7 @@ const BeneficiaryStory = () => {
             <p>{showFullStory ? selectedStory.content : selectedStory.content.slice(0, 300) + '...'}</p>
             {selectedStory.image_url && (
               <img
-                src={`http://127.0.0.1:5000${selectedStory.image_url}`}
+                src={`${BASE_URL}${selectedStory.image_url}`}
                 alt={selectedStory.title}
                 style={{ maxWidth: '100%', marginTop: '10px' }}
               />

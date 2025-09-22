@@ -9,9 +9,6 @@ __pycache__/
 instance/
 .env
 
-# === Flask / SQLAlchemy ===
-migrations/
-
 # === VSCode / Editor / OS Files ===
 .vscode/
 *.swp

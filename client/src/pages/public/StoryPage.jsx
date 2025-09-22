@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import "../../styles/StoryPage.css"
+import BASE_URL from '../../api';
 
 const StoryPage = () => {
     const { id } = useParams();
@@ -8,7 +9,7 @@ const StoryPage = () => {
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      fetch(`http://127.0.0.1:5000/stories`)
+      fetch(`${BASE_URL}/stories`)
         .then((res) => res.json())
         .then((data) => {
           setStories(data);
@@ -35,7 +36,7 @@ const StoryPage = () => {
             <p className="story-date">{new Date(story.date).toLocaleDateString()}</p>
             <p className="story-content">{story.content}</p>
             {story.image_url && (
-            <img src={`http://127.0.0.1:5000${story.image_url}`} alt="Story visual" className="story-image" />
+            <img src={`${BASE_URL}${story.image_url}`} alt="Story visual" className="story-image" />
           )}
             {/* <p className="story-charity"><strong>Charity:</strong> {story.charity_name}</p> */}
           </div>
