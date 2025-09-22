@@ -48,9 +48,10 @@ def create_app(config_class=None):
     migrate.init_app(app, db)
     
     if os.environ.get("FLASK_ENV") == "production":
-        CORS(app, origins=["tuinue-wasichana-project-thh9.vercel.app"])
+        allowed_origins = os.environ.get("CORS_ORIGINS", "").split(",")
+        CORS(app, origins=allowed_origins)
     else:
-        CORS(app) 
+        CORS(app)
 
     bcrypt.init_app(app)
     login_manager.login_view = 'auth.login'
